@@ -52,7 +52,7 @@ public class Splash extends Activity implements View.OnClickListener {
             Splash.this.startActivity(myIntent);
         }
         if(v == players){
-            Intent myIntent = new Intent(Splash.this, Players.class);
+            Intent myIntent = new Intent(Splash.this, Player.class);
             //myIntent.putExtra("key", value);
             Splash.this.startActivity(myIntent);
         }

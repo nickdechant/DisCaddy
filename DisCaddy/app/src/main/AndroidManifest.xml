@@ -25,8 +25,12 @@
             android:label="@string/title_activity_recent_scorecards" >
         </activity>
         <activity
-            android:name=".Players"
-            android:label="@string/title_activity_players" >
+            android:name=".Player"
+            android:label="Player" >
+        </activity>
+        <activity
+            android:name=".NewPlayer"
+            android:label="NewPlayer" >
         </activity>
         <activity
             android:name=".FindACourse"

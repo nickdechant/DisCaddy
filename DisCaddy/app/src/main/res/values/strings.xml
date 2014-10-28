@@ -16,5 +16,8 @@
     <string name="title_activity_find_acourse">FindACourse</string>
     <string name="title_activity_discs">Discs</string>
     <string name="title_activity_report_disc">ReportDisc</string>
+    <string name="no_players">No Players Yet</string>
+    <string name="add_player">Add Player</string>
+    <string name="menu_delete">Delete Player</string>
 
 </resources>
