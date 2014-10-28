@@ -135,7 +135,7 @@ public class PlayerDbAdapter {
      * @return Cursor positioned to matching player, if found
      * @throws SQLException if note could not be found/retrieved
      */
-    public Cursor fetchNote(long rowId) throws SQLException {
+    public Cursor fetchPlayer(long rowId) throws SQLException {
 
         Cursor mCursor =
 
@@ -156,7 +156,7 @@ public class PlayerDbAdapter {
      *
      * @return true if the player was successfully updated, false otherwise
      */
-    public boolean updateNote(long rowId, String name, String course, String score, String disk) {
+    public boolean updatePlayer(long rowId, String name, String course, String score, String disk) {
         ContentValues args = new ContentValues();
         args.put(KEY_Name, name);
         args.put(KEY_Course, course);
