@@ -19,5 +19,10 @@
     <string name="no_players">No Players Yet</string>
     <string name="add_player">Add Player</string>
     <string name="menu_delete">Delete Player</string>
+    <string name="player_name">Player Name</string>
+    <string name="player_score">Player Score</string>
+    <string name="player_fav_course">Favorite Course</string>
+    <string name="player_disk">Favorite Disk</string>
+    <string name="title_activity_player_profile">PlayerProfile</string>
 
 </resources>

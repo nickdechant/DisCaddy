@@ -2,6 +2,7 @@ package com.discaddy;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,6 +35,14 @@ public class Splash extends Activity implements View.OnClickListener {
         recentScorecard.setOnClickListener(this);
         players.setOnClickListener(this);
         findACourse.setOnClickListener(this);
+        findACourse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                String uri = String.format("geo:0,0?q=disk+golf+course"); // for example pass geo:75.333000,30.003030 to search for latitude = 75.333000 and longitude = 30.003030 as your default search query
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                startActivity(intent);
+            }
+        });
         discs.setOnClickListener(this);
         reportDisc.setOnClickListener(this);
 

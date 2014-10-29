@@ -1,5 +1,6 @@
 package com.discaddy;
 
+import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -9,13 +10,17 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by scott on 10/27/14.
  */
-public class Player extends ListActivity{
+public class Player extends Activity {
     private int mNoteNumber = 1;
     private PlayerDbAdapter mDbHelper;
     public static final int INSERT_ID = Menu.FIRST;
@@ -28,8 +33,9 @@ public class Player extends ListActivity{
         setContentView(R.layout.activity_players);
         mDbHelper = new PlayerDbAdapter(this);
         mDbHelper.open();
+        //mDbHelper.createPlayer("BOB", "RoyG", "100", "Destroyer");
         fillData();
-        registerForContextMenu(getListView());
+        //registerForContextMenu(getListView());
     }
 
     /*@Override*/
@@ -40,8 +46,9 @@ public class Player extends ListActivity{
         return true;
     }
 
+    /*
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOpwtionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -51,6 +58,7 @@ public class Player extends ListActivity{
         }
         return super.onOptionsItemSelected(item);
     }
+    */
 
     public void createPlayer(View view) {
         Intent myIntent = new Intent(Player.this, NewPlayer.class);
@@ -73,7 +81,27 @@ public class Player extends ListActivity{
         // Now create an array adapter and set it to display using our row
         SimpleCursorAdapter players =
                 new SimpleCursorAdapter(this, R.layout.player_row, c, from, to);
-        setListAdapter(players);
+        ListView playerList = (ListView)findViewById(R.id.players_list);
+        playerList.setAdapter(players);
+        playerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                                    long id) {
+
+                Cursor playerData = mDbHelper.fetchPlayer(id);
+                String name = playerData.getString(1); // Name index
+                String course = playerData.getString(2); // Course index
+                String score = playerData.getString(3); // Score index
+                String disk = playerData.getString(4); // Disk index
+
+                Intent myIntent = new Intent(Player.this, PlayerProfile.class);
+                myIntent.putExtra("name", name);
+                myIntent.putExtra("course", course);
+                myIntent.putExtra("score", score);
+                myIntent.putExtra("disk", disk);
+                Player.this.startActivity(myIntent);;
+            }
+        });
     }
 }
 

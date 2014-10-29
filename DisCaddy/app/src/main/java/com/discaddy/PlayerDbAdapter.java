@@ -32,7 +32,7 @@ public class PlayerDbAdapter {
                     "name TEXT," +
                     "course TEXT," +
                     "score TEXT," +
-                    "disk TEST)";
+                    "disk TEXT)";
 
     private static final String DATABASE_NAME = "data";
     private static final String DATABASE_TABLE = "player";
