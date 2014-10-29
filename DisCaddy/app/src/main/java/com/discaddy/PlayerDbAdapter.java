@@ -27,9 +27,12 @@ public class PlayerDbAdapter {
      * could be an issue!!! I don't know sql
      */
     private static final String DATABASE_CREATE =
-            "create table player (_id integer primary key autoincrement, "
-                    + "name text not null, course text not null, score text not null" +
-                    ", disk text not null);";
+            "CREATE TABLE player (" +
+                    "_id INTEGER PRIMARY KEY," +
+                    "name TEXT," +
+                    "course TEXT," +
+                    "score TEXT," +
+                    "disk TEST)";
 
     private static final String DATABASE_NAME = "data";
     private static final String DATABASE_TABLE = "player";
