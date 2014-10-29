@@ -1,18 +1,49 @@
 package com.discaddy;
 
-import java.util.*;
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
-/**
- * Created by nick on 10/28/14.
- */
-public class Scorecard {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-//    private ArrayList<String> players;
+
+public class Scorecard extends Activity {
+
     private Map<String, int[]> scores;
+    private ScorecardDbAdapter mDbHelperScore;
 
-    public Scorecard() {
-//        this.players = new ArrayList<String>();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_score_card2);
         this.scores = new HashMap<String, int[]>();
+        mDbHelperScore = new ScorecardDbAdapter(this);
+        mDbHelperScore.open();
+        //fillData(); //Prob going to need this eventually!!!!!!!!!!!
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.score_card, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public int[] getScores(String player) {

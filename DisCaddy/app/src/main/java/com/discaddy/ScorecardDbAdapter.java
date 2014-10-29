@@ -8,43 +8,65 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-/**
- * Created by nick on 10/28/14.
- */
 public class ScorecardDbAdapter {
+    //public static final String KEY_Course_Name = "course_name"; //Don't know if I need this yet.
 
-//    public static final String KEY_Name = "name";
-//    public static final String KEY_Course = "course";
-//    public static final String KEY_Score = "score";
-//    public static final String KEY_Disk = "disk";
-//    public static final String KEY_ROWID = "_id";
-
-    public static final String KEY_GameName = "game_name";
-    public static final String KEY_CourseName = "course_name";
-    public static final String KEY_Players = "players";
-
-
+    public static final String KEY_Hole_One = "hole_one";
+    public static final String KEY_Hole_Two = "hole_two";
+    public static final String KEY_Hole_Three = "hole_three";
+    public static final String KEY_Hole_Four = "hole_four";
+    public static final String KEY_Hole_Five = "hole_five";
+    public static final String KEY_Hole_Six = "hole_six";
+    public static final String KEY_Hole_Seven = "hole_seven";
+    public static final String KEY_Hole_Eight = "hole_eight";
+    public static final String KEY_Hole_Nine = "hole_nine";
+    public static final String KEY_Hole_Ten = "hole_ten";
+    public static final String KEY_Hole_Eleven = "hole_eleven";
+    public static final String KEY_Hole_Twelve = "hole_twelve";
+    public static final String KEY_Hole_Thirteen = "hole_thirteen";
+    public static final String KEY_Hole_Fourteen = "hole_fourteen";
+    public static final String KEY_Hole_Fifteen = "hole_fifteen";
+    public static final String KEY_Hole_Sixteen = "hole_sixteen";
+    public static final String KEY_Hole_Seventeen = "hole_seventeen";
+    public static final String KEY_Hole_Eighteen = "hole_eighteen";
+    public static final String KEY_Hole_Nineteen = "hole_nineteen";
+    public static final String KEY_Player = "player";
     public static final String KEY_ROWID = "_id";
+    private String[] keys = {KEY_ROWID, KEY_Player,KEY_Hole_One, KEY_Hole_Two, KEY_Hole_Three,KEY_Hole_Four,KEY_Hole_Five,KEY_Hole_Six,KEY_Hole_Seven,KEY_Hole_Eight,KEY_Hole_Nine,KEY_Hole_Ten,KEY_Hole_Eleven,KEY_Hole_Twelve,KEY_Hole_Thirteen,KEY_Hole_Fourteen,KEY_Hole_Fifteen,KEY_Hole_Sixteen,KEY_Hole_Seventeen,KEY_Hole_Eighteen};
+
 
     private static final String TAG = "ScorecardDbAdapter";
-    private DatabaseHelper mDbHelper;
-    private SQLiteDatabase mDb;
+    private DatabaseHelper mDbHelperScorecard;
+    private SQLiteDatabase mDbScoreCard;
 
     /**
      * Database creation sql statement
-     * could be an issue!!! I don't know sql
      */
-//    private static final String DATABASE_CREATE =
-//            "create table player (_id integer primary key autoincrement, "
-//                    + "name text not null, course text not null, score text not null" +
-//                    ", disk text not null);";
+    private static final String DATABASE_CREATE =
+            "CREATE TABLE player (" +
+                    "_id INTEGER PRIMARY KEY," +
+                    "player TEXT," +
+                    "hole_one INTEGER," +
+                    "hole_two INTEGER," +
+                    "hole_three INTEGER," +
+                    "hole_four INTEGER," +
+                    "hole_five INTEGER," +
+                    "hole_six INTEGER," +
+                    "hole_seven INTEGER," +
+                    "hole_eight INTEGER," +
+                    "hole_nine INTEGER," +
+                    "hole_ten INTEGER," +
+                    "hole_eleven INTEGER," +
+                    "hole_twelve INTEGER," +
+                    "hole_thirteen INTEGER," +
+                    "hole_fourteen INTEGER," +
+                    "hole_fifteen INTEGER," +
+                    "hole_sixteen INTEGER," +
+                    "hole_seventeen INTEGER," +
+                    "hole_eighteen INTEGER)";
 
-
-//    private static final String DATABASE_NAME = "data";
-//    private static final String DATABASE_TABLE = "player";
-
-    private static final String DATABASE_NAME = "scorecard_data";
-    private static final String DATABASE_TABLE = "scorecard";
+    private static final String DATABASE_NAME = "scorecards";
+    private static final String DATABASE_TABLE = "zilker";
     private static final int DATABASE_VERSION = 1;
 
     private final Context mCtx;
@@ -58,7 +80,7 @@ public class ScorecardDbAdapter {
         @Override
         public void onCreate(SQLiteDatabase db) {
 
-//            db.execSQL(DATABASE_CREATE);
+            db.execSQL(DATABASE_CREATE);
         }
 
         @Override
@@ -90,31 +112,30 @@ public class ScorecardDbAdapter {
      * @throws android.database.SQLException if the database could be neither opened or created
      */
     public ScorecardDbAdapter open() throws SQLException {
-        mDbHelper = new DatabaseHelper(mCtx);
-        mDb = mDbHelper.getWritableDatabase();
+        mDbHelperScorecard = new DatabaseHelper(mCtx);
+        mDbScoreCard = mDbHelperScorecard.getWritableDatabase();
         return this;
     }
 
     public void close() {
-        mDbHelper.close();
+        mDbHelperScorecard.close();
     }
 
+
     /**
-     * Create a new player using the information provided. If the player is
+     * Create a new player for this course using the information provided. If the player is
      * successfully created return the new rowId for that note, otherwise return
      * a -1 to indicate failure.
      *
      *
      * @return rowId or -1 if failed
      */
-    public long createScorecard(String name, String course, String score, String disk) {
+    public long createPlayer(String name) {
         ContentValues initialValues = new ContentValues();
-//        initialValues.put(KEY_Name, name);
-//        initialValues.put(KEY_Course, course);
-//        initialValues.put(KEY_Score, score);
-//        initialValues.put(KEY_Disk, disk);
-
-        return mDb.insert(DATABASE_TABLE, null, initialValues);
+        initialValues.put(KEY_Player, name);
+        for(int i = 2; i < keys.length; i++)
+            initialValues.put(keys[i], 0);
+        return mDbScoreCard.insert(DATABASE_TABLE, null, initialValues);
     }
 
     /**
@@ -125,7 +146,7 @@ public class ScorecardDbAdapter {
      */
     public boolean deletePlayer(long rowId) {
 
-        return mDb.delete(DATABASE_TABLE, KEY_ROWID + "=" + rowId, null) > 0;
+        return mDbScoreCard.delete(DATABASE_TABLE, KEY_ROWID + "=" + rowId, null) > 0;
     }
 
     /**
@@ -133,11 +154,10 @@ public class ScorecardDbAdapter {
      *
      * @return Cursor over all notes
      */
-//    public Cursor fetchAllPlayers() {
-//
-//        return mDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, KEY_Name,
-//                KEY_Course, KEY_Score, KEY_Disk}, null, null, null, null, null);
-//    }
+    public Cursor fetchAllPlayers() {
+
+        return mDbScoreCard.query(DATABASE_TABLE, keys, null, null, null, null, null);
+    }
 
     /**
      * Return a Cursor positioned at the note that matches the given rowId
@@ -146,19 +166,18 @@ public class ScorecardDbAdapter {
      * @return Cursor positioned to matching player, if found
      * @throws SQLException if note could not be found/retrieved
      */
-//    public Cursor fetchPlayer(long rowId) throws SQLException {
-//
-//        Cursor mCursor =
-//
-//                mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_Name,
-//                                KEY_Course, KEY_Score, KEY_Disk}, KEY_ROWID + "=" + rowId, null,
-//                        null, null, null, null);
-//        if (mCursor != null) {
-//            mCursor.moveToFirst();
-//        }
-//        return mCursor;
-//
-//    }
+    public Cursor fetchPlayer(long rowId) throws SQLException {
+
+        Cursor mCursor =
+
+                mDbScoreCard.query(true, DATABASE_TABLE, keys, KEY_ROWID + "=" + rowId, null,
+                        null, null, null, null);
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+        }
+        return mCursor;
+
+    }
 
     /**
      * Update the player using the details provided. The player to be updated is
@@ -167,14 +186,11 @@ public class ScorecardDbAdapter {
      *
      * @return true if the player was successfully updated, false otherwise
      */
-//    public boolean updatePlayer(long rowId, String name, String course, String score, String disk) {
-//        ContentValues args = new ContentValues();
-//        args.put(KEY_Name, name);
-//        args.put(KEY_Course, course);
-//        args.put(KEY_Score, score);
-//        args.put(KEY_Disk, disk);
-//
-//        return mDb.update(DATABASE_TABLE, args, KEY_ROWID + "=" + rowId, null) > 0;
-//    }
-
+    public boolean updatePlayerScore(long rowId, String name, int[] scores) {
+        ContentValues args = new ContentValues();
+        args.put(KEY_Player, name);
+        for(int i = 0; i < keys.length; i++)
+            args.put(keys[i], scores[i]);
+        return mDbScoreCard.update(DATABASE_TABLE, args, KEY_ROWID + "=" + rowId, null) > 0;
+    }
 }
