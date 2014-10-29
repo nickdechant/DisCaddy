@@ -9,32 +9,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 public class ScorecardDbAdapter {
-    //public static final String KEY_Course_Name = "course_name"; //Don't know if I need this yet.
 
-    public static final String KEY_Hole_One = "hole_one";
-    public static final String KEY_Hole_Two = "hole_two";
-    public static final String KEY_Hole_Three = "hole_three";
-    public static final String KEY_Hole_Four = "hole_four";
-    public static final String KEY_Hole_Five = "hole_five";
-    public static final String KEY_Hole_Six = "hole_six";
-    public static final String KEY_Hole_Seven = "hole_seven";
-    public static final String KEY_Hole_Eight = "hole_eight";
-    public static final String KEY_Hole_Nine = "hole_nine";
-    public static final String KEY_Hole_Ten = "hole_ten";
-    public static final String KEY_Hole_Eleven = "hole_eleven";
-    public static final String KEY_Hole_Twelve = "hole_twelve";
-    public static final String KEY_Hole_Thirteen = "hole_thirteen";
-    public static final String KEY_Hole_Fourteen = "hole_fourteen";
-    public static final String KEY_Hole_Fifteen = "hole_fifteen";
-    public static final String KEY_Hole_Sixteen = "hole_sixteen";
-    public static final String KEY_Hole_Seventeen = "hole_seventeen";
-    public static final String KEY_Hole_Eighteen = "hole_eighteen";
-    public static final String KEY_Hole_Nineteen = "hole_nineteen";
-    public static final String KEY_Player = "player";
-    public static final String KEY_ROWID = "_id";
-    private String[] keys = {KEY_ROWID, KEY_Player,KEY_Hole_One, KEY_Hole_Two, KEY_Hole_Three,KEY_Hole_Four,KEY_Hole_Five,KEY_Hole_Six,KEY_Hole_Seven,KEY_Hole_Eight,KEY_Hole_Nine,KEY_Hole_Ten,KEY_Hole_Eleven,KEY_Hole_Twelve,KEY_Hole_Thirteen,KEY_Hole_Fourteen,KEY_Hole_Fifteen,KEY_Hole_Sixteen,KEY_Hole_Seventeen,KEY_Hole_Eighteen};
-
-
+    private String[] keys = {"_id", "player","hole_one","hole_two","hole_three","hole_four","hole_five","hole_six","hole_seven","hole_eight","hole_nine","hole_ten","hole_eleven","hole_twelve","hole_thirteen","hole_fourteen","hole_fifteen","hole_sixteen","hole_seventeen","hole_eighteen"};
     private static final String TAG = "ScorecardDbAdapter";
     private DatabaseHelper mDbHelperScorecard;
     private SQLiteDatabase mDbScoreCard;
@@ -132,7 +108,7 @@ public class ScorecardDbAdapter {
      */
     public long createPlayer(String name) {
         ContentValues initialValues = new ContentValues();
-        initialValues.put(KEY_Player, name);
+        initialValues.put(keys[1], name);
         for(int i = 2; i < keys.length; i++)
             initialValues.put(keys[i], 0);
         return mDbScoreCard.insert(DATABASE_TABLE, null, initialValues);
@@ -146,7 +122,7 @@ public class ScorecardDbAdapter {
      */
     public boolean deletePlayer(long rowId) {
 
-        return mDbScoreCard.delete(DATABASE_TABLE, KEY_ROWID + "=" + rowId, null) > 0;
+        return mDbScoreCard.delete(DATABASE_TABLE, keys[0] + "=" + rowId, null) > 0;
     }
 
     /**
@@ -170,7 +146,7 @@ public class ScorecardDbAdapter {
 
         Cursor mCursor =
 
-                mDbScoreCard.query(true, DATABASE_TABLE, keys, KEY_ROWID + "=" + rowId, null,
+                mDbScoreCard.query(true, DATABASE_TABLE, keys, keys[0] + "=" + rowId, null,
                         null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();
@@ -188,9 +164,9 @@ public class ScorecardDbAdapter {
      */
     public boolean updatePlayerScore(long rowId, String name, int[] scores) {
         ContentValues args = new ContentValues();
-        args.put(KEY_Player, name);
-        for(int i = 0; i < keys.length; i++)
+        args.put(keys[1], name);
+        for(int i = 2; i < keys.length; i++)
             args.put(keys[i], scores[i]);
-        return mDbScoreCard.update(DATABASE_TABLE, args, KEY_ROWID + "=" + rowId, null) > 0;
+        return mDbScoreCard.update(DATABASE_TABLE, args, keys[0] + "=" + rowId, null) > 0;
     }
 }
