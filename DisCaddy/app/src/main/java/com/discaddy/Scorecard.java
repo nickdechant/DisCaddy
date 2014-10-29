@@ -30,5 +30,5 @@ public class Scorecard {
     public void addPlayer(String name) {
         scores.put(name, new int[18]);
     }
-    
+
 }
