@@ -8,6 +8,17 @@ import android.view.MenuItem;
 
 public class NewScorecard extends Activity {
 
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_players);
+//        mDbHelper = new PlayerDbAdapter(this);
+//        mDbHelper.open();
+//        fillData();
+//        registerForContextMenu(getListView());
+//    }
+//
+//    private PlayerDbAdapter mDbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

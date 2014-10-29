@@ -1,16 +1,38 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     tools:context="com.discaddy.NewPlayer">
 
-    <TextView
-        android:text="New Player"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <EditText android:id="@+id/name_new_player"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:text="Name"/>
 
-</RelativeLayout>
+    <EditText android:id="@+id/course_new_player"
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="50dp"
+        android:text="Favorite Course"/>
+
+    <EditText android:id="@+id/score_new_player"
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="50dp"
+        android:text="Top Score"/>
+
+    <EditText android:id="@+id/disk_new_player"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:text="Favorite Disk"/>
+
+    <Button android:id="@+id/submit_new_player"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Submit"
+        android:onClick="createNewPlayer"/>
+
+</LinearLayout>
