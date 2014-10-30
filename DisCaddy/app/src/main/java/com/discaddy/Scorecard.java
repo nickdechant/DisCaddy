@@ -1,7 +1,9 @@
 package com.discaddy;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -13,6 +15,10 @@ public class Scorecard extends Activity {
 
     private Map<String, int[]> scores;
     private ScorecardDbAdapter mDbHelperScore;
+    private CourseDbAdapter mDbHelperCourse;
+
+    private final String LOG_TAG = "Scorecard";
+    private int currentHole;
 
 
     @Override
@@ -22,6 +28,25 @@ public class Scorecard extends Activity {
         this.scores = new HashMap<String, int[]>();
         mDbHelperScore = new ScorecardDbAdapter(this);
         mDbHelperScore.open();
+        Intent myIntent = getIntent();
+
+        //create mock course for testing
+        String[] parStrings = {"4", "3", "4", "3", "4", "3", "4", "3", "4", "3", "4", "3", "4", "3", "4", "3", "4", "3"};
+        mDbHelperCourse = new CourseDbAdapter(this);
+        mDbHelperCourse.open();
+        if (mDbHelperCourse.createCourse("Zilker", parStrings) != -1)
+            Log.d(LOG_TAG, "course created successfully");
+
+        String playerString = myIntent.getStringExtra("playerString");
+        String[] players = playerString.split("#");
+        for (String player : players) {
+            //TODO: parse in par score from current course
+            int[] pars = new int[18];
+            for (int i=0; i<18; i++)
+                pars[i] = Integer.parseInt(parStrings[i]);
+            scores.put(player, pars);
+        }
+
         //fillData(); //Prob going to need this eventually!!!!!!!!!!!
     }
 

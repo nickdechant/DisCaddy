@@ -10,19 +10,22 @@
     <string name="find_a_course_button">Find a Course</string>
     <string name="discs_button">Discs</string>
     <string name="report_found_disc_button">Report Found Disc</string>
-    <string name="title_activity_new_scorecard">NewScorecard</string>
-    <string name="title_activity_recent_scorecards">RecentScorecards</string>
-    <string name="title_activity_players">Players</string>
-    <string name="title_activity_find_acourse">FindACourse</string>
-    <string name="title_activity_discs">Discs</string>
-    <string name="title_activity_report_disc">ReportDisc</string>
+
     <string name="no_players">No Players Yet</string>
     <string name="add_player">Add Player</string>
     <string name="menu_delete">Delete Player</string>
     <string name="player_name">Player Name</string>
     <string name="player_score">Player Score</string>
     <string name="player_fav_course">Favorite Course</string>
-    <string name="player_disk">Favorite Disk</string>
+    <string name="player_disk">Favorite Disc</string>
+
+    <string name="title_activity_new_scorecard">NewScorecard</string>
+    <string name="title_activity_recent_scorecards">RecentScorecards</string>
+    <string name="title_activity_players">Players</string>
+    <string name="title_activity_find_acourse">FindACourse</string>
+    <string name="title_activity_discs">Discs</string>
+    <string name="title_activity_report_disc">ReportDisc</string>
     <string name="title_activity_player_profile">PlayerProfile</string>
+    <string name="title_activity_scorecard">Scorecard</string>
 
 </resources>
