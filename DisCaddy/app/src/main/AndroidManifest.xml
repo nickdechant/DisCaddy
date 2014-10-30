@@ -50,13 +50,12 @@
             android:label="@string/title_activity_player_profile" >
         </activity>
         <activity
-<<<<<<< HEAD
             android:name=".PlayerEdit"
             android:label="PlayerEdit">
-=======
+        </activity>
+        <activity
             android:name=".Scorecard"
-            android:label="@string/title_activity_scorecard" >
->>>>>>> 3d9f043a929ff3fd95689a05653f2401aaf5a3c3
+            android:label="@string/title_activity_scorecard">
         </activity>
     </application>
 
