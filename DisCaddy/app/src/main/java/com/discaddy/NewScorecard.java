@@ -164,16 +164,8 @@ public class NewScorecard extends Activity {
     }
 
     public void addNewPlayer(View view) {
-
-        //TODO: how to send user to NewPlayer activity?
-        NewPlayer newPlayer = new NewPlayer();
-        newPlayer.createNewPlayer(view);
-
-        Intent myIntent = new Intent(NewScorecard.this, Player.class);
+        Intent myIntent = new Intent(NewScorecard.this, NewPlayer.class);
         NewScorecard.this.startActivity(myIntent);
-
-//        Intent myIntent = new Intent(NewPlayer.this, Player.class);
-//        NewPlayer.this.startActivity(myIntent);
     }
 
     public void addCurrentPlayer(View view) {

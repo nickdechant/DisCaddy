@@ -57,8 +57,6 @@ public class NewPlayer extends Activity {
         mDbHelper_new.createPlayer(name_field.getText().toString(), course_field.getText().toString(),
         score_field.getText().toString(), disk_field.getText().toString());
         //sends user back to Player activity with updated list.
-        Intent myIntent = new Intent(NewPlayer.this, Player.class);
-        myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY);
-        NewPlayer.this.startActivity(myIntent);
+        finish();
     }
 }
