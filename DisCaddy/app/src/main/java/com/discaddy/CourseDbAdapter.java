@@ -34,6 +34,7 @@ public class CourseDbAdapter {
     private static final String DATABASE_CREATE =
             "CREATE TABLE course (" +
                     "_id INTEGER PRIMARY KEY," +
+                    "name TEXT," +
                     "hole1 TEXT," +
                     "hole2 TEXT," +
                     "hole3 TEXT," +
@@ -93,7 +94,7 @@ public class CourseDbAdapter {
     public long createCourse(String name, String[] pars) {
         ContentValues initialValues = new ContentValues();
 
-        initialValues.put(KEY_COURSENAME, name);
+//        initialValues.put(KEY_COURSENAME, name);
         for (int i=0; i<pars.length; i++)
             initialValues.put(holes[i], pars[i]);
 
