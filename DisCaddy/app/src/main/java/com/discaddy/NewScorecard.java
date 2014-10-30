@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,7 +28,9 @@ public class NewScorecard extends Activity {
     private Scorecard scorecard;
     private ArrayList<String> currentPlayers;
     private PlayerDbAdapter mDbHelper;
-    private Map<Integer, Integer> selectedPlayers;
+    private Map<Integer, String> selectedPlayers;
+
+    private final String LOG_TAG = "NewScorecard";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +39,7 @@ public class NewScorecard extends Activity {
 
         this.scorecard = new Scorecard();
         this.currentPlayers = new ArrayList<String>();
-        this.selectedPlayers = new HashMap<Integer, Integer>();
+        this.selectedPlayers = new HashMap<Integer, String>();
         mDbHelper = new PlayerDbAdapter(this);
         mDbHelper.open();
         fillData();
@@ -87,20 +90,28 @@ public class NewScorecard extends Activity {
 //                        "Click ListItem Number " + position, Toast.LENGTH_SHORT)
 //                        .show();
 
+                Cursor playerData = mDbHelper.fetchPlayer(id);
+                String name = playerData.getString(1); // Name index
+
+                String putStr = "";
+
                 if (selectedPlayers.containsKey(position)) {
-                    if (selectedPlayers.get(position) == 1) {
-                        selectedPlayers.put(position, 0);
+                    if (Integer.parseInt(selectedPlayers.get(position).split("#")[0]) == 1) {
+                        putStr = "0#" + selectedPlayers.get(position).split("#")[1];
+                        selectedPlayers.put(position, putStr);
                         Toast.makeText(getApplicationContext(),"item " + position + " now unselected", Toast.LENGTH_SHORT).show();
 //                        ((TextView)view).setBackgroundColor(Color.argb(0,0,0,0));
                     }
                     else {
-                        selectedPlayers.put(position, 1);
+                        putStr = "1#" + selectedPlayers.get(position).split("#")[1];
+                        selectedPlayers.put(position, putStr);
                         Toast.makeText(getApplicationContext(),"item " + position + " now selected", Toast.LENGTH_SHORT).show();
 //                        ((TextView)view).setBackgroundColor(Color.argb(125, 75, 236, 90));
                     }
                 }
                 else {
-                    selectedPlayers.put(position, 1);
+                    putStr = "1#" + name;
+                    selectedPlayers.put(position, putStr);
                     Toast.makeText(getApplicationContext(),"item " + position + " now selected", Toast.LENGTH_SHORT).show();
 //                    ((TextView)view).setBackgroundColor(Color.argb(125, 75, 236, 90));
                 }
@@ -172,10 +183,27 @@ public class NewScorecard extends Activity {
 
     public void go(View view) {
         //currentPlayers should contain all players
-        for (Map.Entry<Integer, Integer> e : selectedPlayers.entrySet()) {
-            if (e.getValue() == 1) {
-
-            }
+        for (Map.Entry<Integer, String> e : selectedPlayers.entrySet()) {
+//            Log.d(LOG_TAG, e.getValue());
+            if (Integer.parseInt(e.getValue().split("#")[0]) == 1)
+                currentPlayers.add(e.getValue().split("#")[1]);
         }
+
+        String playerString = "";
+
+        for (String s : currentPlayers)
+            playerString += s + "#";
+        playerString = playerString.substring(0,playerString.length() - 1);
+
+        Intent myIntent = new Intent(NewScorecard.this, Scorecard.class);
+
+        myIntent.putExtra("playerString", playerString);
+
+        NewScorecard.this.startActivity(myIntent);
+
+        //currentPlayers now contains all players that are playing.
+        //pass this to new Intent for Scorecard Activity
+
+
     }
 }

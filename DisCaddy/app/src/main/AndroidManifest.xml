@@ -49,6 +49,10 @@
             android:name=".PlayerProfile"
             android:label="@string/title_activity_player_profile" >
         </activity>
+        <activity
+            android:name=".Scorecard"
+            android:label="@string/title_activity_scorecard" >
+        </activity>
     </application>
 
 </manifest>

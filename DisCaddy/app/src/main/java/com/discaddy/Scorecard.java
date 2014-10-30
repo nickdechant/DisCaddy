@@ -1,6 +1,7 @@
 package com.discaddy;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +15,8 @@ public class Scorecard extends Activity {
     private Map<String, int[]> scores;
     private ScorecardDbAdapter mDbHelperScore;
 
+    private int currentHole;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +25,16 @@ public class Scorecard extends Activity {
         this.scores = new HashMap<String, int[]>();
         mDbHelperScore = new ScorecardDbAdapter(this);
         mDbHelperScore.open();
+        Intent myIntent = getIntent();
+        String playerString = myIntent.getStringExtra("playerString");
+
+        String[] players = playerString.split("#");
+        for (String player : players) {
+            //TODO: parse in par score from current course
+            int[] pars = new int[18];
+            scores.put(player, pars);
+        }
+
         //fillData(); //Prob going to need this eventually!!!!!!!!!!!
     }
 
