@@ -183,11 +183,15 @@ public class NewScorecard extends Activity {
 
     public void go(View view) {
         //currentPlayers should contain all players
+        if (selectedPlayers.entrySet().isEmpty())
+            return;
         for (Map.Entry<Integer, String> e : selectedPlayers.entrySet()) {
 //            Log.d(LOG_TAG, e.getValue());
             if (Integer.parseInt(e.getValue().split("#")[0]) == 1)
                 currentPlayers.add(e.getValue().split("#")[1]);
         }
+        if (currentPlayers.isEmpty())
+            return;
 
         String playerString = "";
 

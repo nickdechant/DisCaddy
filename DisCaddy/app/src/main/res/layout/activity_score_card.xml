@@ -1,16 +1,61 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.discaddy.Scorecard">
-
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
     <TextView
-        android:text="@string/hello_world"
+        android:id="@+id/scorecard_course_name"
         android:layout_width="wrap_content"
+        android:text="Course"
+        android:textSize="20dp"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/scorecard_current_hole"
+        android:layout_width="wrap_content"
+        android:text="Current Hole"
+        android:textSize="20dp"
+        android:layout_alignParentRight="true"
         android:layout_height="wrap_content" />
 
+    <LinearLayout android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="5dip"
+        android:layout_marginBottom="5dip"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_above="@+id/scorecard_footerlayout"
+        android:layout_below="@id/scorecard_course_name"
+        android:id="@+id/listviewlayout">
+
+        <ListView
+            android:id="@+id/scorecard_list"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+        </ListView>
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/scorecard_footerlayout"
+        android:layout_marginTop="3dip"
+        android:layout_height="45dip"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:gravity="center"
+        android:layout_alignParentBottom="true">
+        <Button
+            android:id="@+id/scorecard_prev_button"
+            android:text="Prev Hole"
+            android:layout_width="0dip"
+            android:layout_height="40dip"
+            android:layout_weight="1">
+        </Button>
+
+        <Button
+            android:id="@+id/scorecard_next_button"
+            android:text="Next hole"
+            android:layout_width="0dip"
+            android:layout_height="40dip"
+            android:layout_weight="1"
+            >
+        </Button>
+    </LinearLayout>
 </RelativeLayout>

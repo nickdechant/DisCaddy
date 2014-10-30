@@ -6,7 +6,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,22 +19,23 @@ import java.util.Map;
 public class Scorecard extends Activity {
 
     private Map<String, int[]> scores;
+    private ArrayList<String> playerNames;
     private ScorecardDbAdapter mDbHelperScore;
     private CourseDbAdapter mDbHelperCourse;
-
     private final String LOG_TAG = "Scorecard";
-    private int currentHole;
-
+    public int currentHole;
+    public String courseName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score_card);
         this.scores = new HashMap<String, int[]>();
+        this.playerNames = new ArrayList<String>();
         mDbHelperScore = new ScorecardDbAdapter(this);
         mDbHelperScore.open();
         Intent myIntent = getIntent();
-
+        this.currentHole = 0;
         //create mock course for testing
         String[] parStrings = {"4", "3", "4", "3", "4", "3", "4", "3", "4", "3", "4", "3", "4", "3", "4", "3", "4", "3"};
         mDbHelperCourse = new CourseDbAdapter(this);
@@ -47,9 +53,47 @@ public class Scorecard extends Activity {
             scores.put(player, pars);
         }
 
+        for (Map.Entry<String, int[]> e : scores.entrySet())
+            playerNames.add(e.getKey());
+
+        ScorecardCustomAdapter custAdapter = new ScorecardCustomAdapter(this, this, scores, currentHole);
+        ListView playerList = (ListView) findViewById(R.id.scorecard_list);
+        playerList.setAdapter(custAdapter);
+
+        Button prevBtn = (Button)findViewById(R.id.scorecard_prev_button);
+        Button nextBtn = (Button)findViewById(R.id.scorecard_next_button);
+
+        prevBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if(currentHole > 0) {
+                    currentHole--;
+                    updateListView();
+                }
+            }
+        });
+
+        nextBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if(currentHole < 17) {
+                    currentHole++;
+                    updateListView();
+                }
+            }
+        });
+        TextView holeDisplayNumber = (TextView) findViewById(R.id.scorecard_current_hole);
+        holeDisplayNumber.setText("Hole " + currentHole);
         //fillData(); //Prob going to need this eventually!!!!!!!!!!!
     }
 
+    public void updateListView() {
+        ScorecardCustomAdapter custAdapter = new ScorecardCustomAdapter(this, this, scores, currentHole);
+        ListView playerList = (ListView) findViewById(R.id.scorecard_list);
+        playerList.setAdapter(custAdapter);
+        TextView holeDisplayNumber = (TextView) findViewById(R.id.scorecard_current_hole);
+        holeDisplayNumber.setText("Hole " + currentHole);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -74,12 +118,12 @@ public class Scorecard extends Activity {
         return this.scores.get(player);
     }
 
-    public void incrementScore(String player, int hole) {
-        this.scores.get(player)[hole]++;
+    public int incrementScore(String player, int hole) {
+        return ++this.scores.get(player)[hole];
     }
 
-    public void decrementScore(String player, int hole) {
-        this.scores.get(player)[hole]--;
+    public int decrementScore(String player, int hole) {
+       return --this.scores.get(player)[hole];
     }
 
     public void addPlayer(String name) {
