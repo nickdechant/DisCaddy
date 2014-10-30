@@ -5,6 +5,7 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
@@ -89,6 +90,8 @@ public class Player extends Activity {
                                     long id) {
 
                 Cursor playerData = mDbHelper.fetchPlayer(id);
+                long player_id = playerData.getLong(0);
+                Log.v("Player", "Player_id: "+player_id);
                 String name = playerData.getString(1); // Name index
                 String course = playerData.getString(2); // Course index
                 String score = playerData.getString(3); // Score index
@@ -99,6 +102,7 @@ public class Player extends Activity {
                 myIntent.putExtra("course", course);
                 myIntent.putExtra("score", score);
                 myIntent.putExtra("disk", disk);
+                myIntent.putExtra("id", player_id);
                 Player.this.startActivity(myIntent);;
             }
         });

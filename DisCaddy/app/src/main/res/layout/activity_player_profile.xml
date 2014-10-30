@@ -74,6 +74,19 @@
         android:layout_toRightOf="@id/player_fav_disk"
         android:layout_below="@id/player_score"/>
 
+    <Button android:id="@+id/submit_edit"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/player_fav_disk_field"
+        android:text="Edit Profile"
+        android:onClick="sendToEdit"/>
+    <Button android:id="@+id/submit_delete"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/submit_edit"
+        android:text="Delete Profile"
+        android:onClick="sendToDelete"/>
+
 
 
 

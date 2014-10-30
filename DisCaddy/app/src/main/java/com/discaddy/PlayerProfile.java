@@ -2,24 +2,37 @@ package com.discaddy;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 
 public class PlayerProfile extends Activity {
+    private PlayerDbAdapter mDbHelper_profile;
+    private String name;
+    private String course;
+    private String score;
+    private String disk;
+    private long player_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player_profile);
+        mDbHelper_profile = new PlayerDbAdapter(this);
+        mDbHelper_profile.open();
 
         Intent playerIntent = getIntent();
-        String name = playerIntent.getStringExtra("name");
-        String course = playerIntent.getStringExtra("course");
-        String score = playerIntent.getStringExtra("score");
-        String disk = playerIntent.getStringExtra("disk");
+        name = playerIntent.getStringExtra("name");
+        course = playerIntent.getStringExtra("course");
+        score = playerIntent.getStringExtra("score");
+        disk = playerIntent.getStringExtra("disk");
+        player_id = playerIntent.getLongExtra("id", 0);
+        Log.v("PlayerProfile", "Player_id: "+player_id);
 
         TextView nameView = (TextView) findViewById(R.id.player_name_field);
         nameView.setText(name);
@@ -50,4 +63,24 @@ public class PlayerProfile extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public void sendToEdit(View view) {
+        Log.v("sendToEdit", "player_id: "+player_id);
+        Intent myIntent = new Intent(PlayerProfile.this, PlayerEdit.class);
+        myIntent.putExtra("name", name);
+        myIntent.putExtra("score", score);
+        myIntent.putExtra("disk", disk);
+        myIntent.putExtra("course", course);
+        myIntent.putExtra("id", player_id);
+        //myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        PlayerProfile.this.startActivity(myIntent);
+    }
+
+    public void sendToDelete(View view){
+        mDbHelper_profile.deletePlayer(player_id);
+        Intent myIntent = new Intent(PlayerProfile.this, Player.class);
+        myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY);
+        PlayerProfile.this.startActivity(myIntent);
+    }
 }
+

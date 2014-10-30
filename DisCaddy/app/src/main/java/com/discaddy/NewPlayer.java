@@ -10,7 +10,6 @@ import android.widget.EditText;
 
 public class NewPlayer extends Activity {
 
-
     private EditText name_field;
     private EditText score_field;
     private EditText course_field;
@@ -58,7 +57,6 @@ public class NewPlayer extends Activity {
         mDbHelper_new.createPlayer(name_field.getText().toString(), course_field.getText().toString(),
         score_field.getText().toString(), disk_field.getText().toString());
         //sends user back to Player activity with updated list.
-        Intent myIntent = new Intent(NewPlayer.this, Player.class);
-        NewPlayer.this.startActivity(myIntent);
+        finish();
     }
 }
