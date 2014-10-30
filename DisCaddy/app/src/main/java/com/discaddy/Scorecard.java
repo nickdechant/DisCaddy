@@ -14,6 +14,7 @@ public class Scorecard extends Activity {
 
     private Map<String, int[]> scores;
     private ScorecardDbAdapter mDbHelperScore;
+    private CourseDbAdapter mDbHelperCourse;
 
     private int currentHole;
 
@@ -26,12 +27,20 @@ public class Scorecard extends Activity {
         mDbHelperScore = new ScorecardDbAdapter(this);
         mDbHelperScore.open();
         Intent myIntent = getIntent();
-        String playerString = myIntent.getStringExtra("playerString");
 
+        //create mock course for testing
+        String[] parStrings = {"4", "3", "4", "3", "4", "3", "4", "3", "4", "3", "4", "3", "4", "3", "4", "3", "4", "3"};
+        mDbHelperCourse = new CourseDbAdapter(this);
+        mDbHelperCourse.open();
+        mDbHelperCourse.createCourse("Zilker", parStrings);
+
+        String playerString = myIntent.getStringExtra("playerString");
         String[] players = playerString.split("#");
         for (String player : players) {
             //TODO: parse in par score from current course
             int[] pars = new int[18];
+            for (int i=0; i<18; i++)
+                pars[i] = Integer.parseInt(parStrings[i]);
             scores.put(player, pars);
         }
 
