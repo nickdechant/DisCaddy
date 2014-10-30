@@ -10,7 +10,6 @@ import android.widget.EditText;
 
 public class NewPlayer extends Activity {
 
-
     private EditText name_field;
     private EditText score_field;
     private EditText course_field;
@@ -59,6 +58,7 @@ public class NewPlayer extends Activity {
         score_field.getText().toString(), disk_field.getText().toString());
         //sends user back to Player activity with updated list.
         Intent myIntent = new Intent(NewPlayer.this, Player.class);
+        myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY);
         NewPlayer.this.startActivity(myIntent);
     }
 }
