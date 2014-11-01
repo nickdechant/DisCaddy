@@ -28,4 +28,21 @@
     <string name="title_activity_player_profile">PlayerProfile</string>
     <string name="title_activity_scorecard">Scorecard</string>
 
+    <string name="edit_name">Name (Required)</string>
+    <string name="edit_course">Favorite Course</string>
+    <string name="edit_score">Top Score</string>
+    <string name="edit_disk">Favorite Disc</string>
+    <string name="edit_Submit">Submit</string>
+
+    <string name="new_name">Name (Required)</string>
+    <string name="new_course">Favorite Course</string>
+    <string name="new_score">Top Score</string>
+    <string name="new_disk">Favorite Disc</string>
+    <string name="new_Submit">Submit</string>
+
+    <string name="profile_edit">Edit Profile</string>
+    <string name="profile_delete">Delete Profile</string>
+
+
+
 </resources>

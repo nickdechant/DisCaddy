@@ -9,35 +9,31 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
 
 public class PlayerEdit extends Activity {
     private PlayerDbAdapter mDbHelper_edit;
-    private String name;
-    private String course;
-    private String score;
-    private String disk;
     private long player_id;
     private EditText nameView;
-    private TextView courseView;
-    private TextView diskView;
-    private TextView scoreView;
+    private TextView courseView, diskView, scoreView;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player_edit);
+        //open database
         mDbHelper_edit = new PlayerDbAdapter(this);
         mDbHelper_edit.open();
+        //get profile info from intent
         Intent playerIntent = getIntent();
-        name = playerIntent.getStringExtra("name");
-        course = playerIntent.getStringExtra("course");
-        score = playerIntent.getStringExtra("score");
-        disk = playerIntent.getStringExtra("disk");
+        String name = playerIntent.getStringExtra("name");
+        String course = playerIntent.getStringExtra("course");
+        String score = playerIntent.getStringExtra("score");
+        String disk = playerIntent.getStringExtra("disk");
+        //set edit fields
         player_id = playerIntent.getLongExtra("id", 0);
-        Log.v("PlayerEditOnCreate", "Player_id: "+player_id);
-
         nameView = (EditText) findViewById(R.id.name_edit_player);
         nameView.setText(name);
         courseView = (TextView) findViewById(R.id.course_edit_player);
@@ -68,21 +64,31 @@ public class PlayerEdit extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    /*
+    *Called upon submit button click
+    *Update player's information in database from the edit fields
+    *Sends user back to PlayerProfile
+    */
     public void updatePlayer(View view){
-        Log.v("PlayerEditUpdatePlayer", "Player ID: "+player_id);
+        String nameview = nameView.getText().toString();
+        String courseview = courseView.getText().toString();
+        String scoreview = scoreView.getText().toString();
+        String diskview = diskView.getText().toString();
 
-       if(mDbHelper_edit.updatePlayer(player_id, nameView.getText().toString(), courseView.getText().toString(),
-               scoreView.getText().toString(), diskView.getText().toString())) {
-           Intent myIntent = new Intent(PlayerEdit.this, PlayerProfile.class);
-           myIntent.putExtra("name", nameView.getText().toString());
-           myIntent.putExtra("score", scoreView.getText().toString());
-           myIntent.putExtra("disk", diskView.getText().toString());
-           myIntent.putExtra("course", courseView.getText().toString());
-           myIntent.putExtra("id", player_id);
-           myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY);
-           PlayerEdit.this.startActivity(myIntent);
-       }else
-           Log.v("PlayerEdit", "Did not update");
+        if(!nameview.equals("")) {
+            if (mDbHelper_edit.updatePlayer(player_id, nameview, courseview, scoreview, diskview)) {
+                Intent myIntent = new Intent(PlayerEdit.this, PlayerProfile.class);
+                myIntent.putExtra("name", nameview);
+                myIntent.putExtra("score", scoreview);
+                myIntent.putExtra("disk", diskview);
+                myIntent.putExtra("course", courseview);
+                myIntent.putExtra("id", player_id);
+                myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY);
+                PlayerEdit.this.startActivity(myIntent);
+            } else
+                Toast.makeText(this, "Error: Could not update", Toast.LENGTH_SHORT).show();
+        }else
+            Toast.makeText(this, "Error: No player name", Toast.LENGTH_SHORT).show();
     }
 
 }

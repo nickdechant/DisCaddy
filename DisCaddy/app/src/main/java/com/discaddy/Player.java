@@ -18,14 +18,9 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.TextView;
 import android.widget.Toast;
 
-/**
- * Created by scott on 10/27/14.
- */
+
 public class Player extends Activity {
-    private int mNoteNumber = 1;
     private PlayerDbAdapter mDbHelper;
-    public static final int INSERT_ID = Menu.FIRST;
-    public static final int DELETE_ID = Menu.FIRST + 1;
 
     /** Called when the activity is first created. */
     @Override
@@ -36,7 +31,6 @@ public class Player extends Activity {
         mDbHelper.open();
         //mDbHelper.createPlayer("BOB", "RoyG", "100", "Destroyer");
         fillData();
-        //registerForContextMenu(getListView());
     }
 
     /*@Override*/
@@ -45,6 +39,18 @@ public class Player extends Activity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.players, menu);
         return true;
+    }
+
+    /*
+    * @Override
+    * Used only when no list items exist
+    * Displays no_players string
+    */
+    public void onContentChanged() {
+        super.onContentChanged();
+        View empty = findViewById(R.id.empty);
+        ListView list = (ListView) findViewById(R.id.players_list);
+        list.setEmptyView(empty);
     }
 
     /*
@@ -61,13 +67,12 @@ public class Player extends Activity {
     }
     */
 
+    /*
+    *Sends user to NewPlayer class on button click.
+    */
     public void createPlayer(View view) {
         Intent myIntent = new Intent(Player.this, NewPlayer.class);
         Player.this.startActivity(myIntent);
-
-//        String noteName = "Player " + mNoteNumber++;
-//        mDbHelper.createPlayer(noteName, "", "", "");
-//        fillData();
     }
 
 

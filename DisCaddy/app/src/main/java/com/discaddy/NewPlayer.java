@@ -3,17 +3,16 @@ package com.discaddy;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class NewPlayer extends Activity {
 
-    private EditText name_field;
-    private EditText score_field;
-    private EditText course_field;
-    private EditText disk_field;
+    private EditText name_field, score_field, course_field, disk_field;
     private PlayerDbAdapter mDbHelper_new;
 
     @Override
@@ -26,6 +25,7 @@ public class NewPlayer extends Activity {
         score_field = (EditText) findViewById(R.id.score_new_player);
         course_field = (EditText) findViewById(R.id.course_new_player);
         disk_field =  (EditText) findViewById(R.id.disk_new_player);
+
 
     }
 
@@ -49,14 +49,28 @@ public class NewPlayer extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    /*Inserts a new player into the database when the user clicks
-    * submit button.
-     */
+    public void FromCard() {
+        Intent i = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(i, 2);
+    }
+
+    /*
+    *Inserts a new player into the database when the user clicks
+    *submit button.
+    *Sends user back to last activity on stack
+    */
     public void createNewPlayer(View view) {
-        //adds the info from user input into database.
-        mDbHelper_new.createPlayer(name_field.getText().toString(), course_field.getText().toString(),
-        score_field.getText().toString(), disk_field.getText().toString());
-        //sends user back to Player activity with updated list.
-        finish();
+        String name = name_field.getText().toString();
+        String score = score_field.getText().toString();
+        String course = course_field.getText().toString();
+        String disk = disk_field.getText().toString();
+
+        if(name.equals(""))
+            Toast.makeText(this, "No player name", Toast.LENGTH_SHORT).show();
+        else{
+            mDbHelper_new.createPlayer(name, course, score, disk);
+            finish();
+        }
     }
 }

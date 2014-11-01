@@ -9,30 +9,30 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="10dp"
-        android:text="Name"/>
+        android:hint="@string/new_name"/>
 
     <EditText android:id="@+id/course_new_player"
         android:layout_width="match_parent"
         android:layout_marginTop="10dp"
         android:layout_height="50dp"
-        android:text="Favorite Course"/>
+        android:hint="@string/new_course"/>
 
     <EditText android:id="@+id/score_new_player"
         android:layout_width="match_parent"
         android:layout_marginTop="10dp"
         android:layout_height="50dp"
-        android:text="Top Score"/>
+        android:hint="@string/new_score"/>
 
     <EditText android:id="@+id/disk_new_player"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="10dp"
-        android:text="Favorite Disk"/>
+        android:hint="@string/new_disk"/>
 
     <Button android:id="@+id/submit_new_player"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="Submit"
+        android:text="@string/new_Submit"
         android:onClick="createNewPlayer"/>
 
 </LinearLayout>

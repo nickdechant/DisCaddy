@@ -1,6 +1,8 @@
 package com.discaddy;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -32,7 +34,6 @@ public class PlayerProfile extends Activity {
         score = playerIntent.getStringExtra("score");
         disk = playerIntent.getStringExtra("disk");
         player_id = playerIntent.getLongExtra("id", 0);
-        Log.v("PlayerProfile", "Player_id: "+player_id);
 
         TextView nameView = (TextView) findViewById(R.id.player_name_field);
         nameView.setText(name);
@@ -72,15 +73,23 @@ public class PlayerProfile extends Activity {
         myIntent.putExtra("disk", disk);
         myIntent.putExtra("course", course);
         myIntent.putExtra("id", player_id);
-        //myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         PlayerProfile.this.startActivity(myIntent);
     }
 
     public void sendToDelete(View view){
-        mDbHelper_profile.deletePlayer(player_id);
-        Intent myIntent = new Intent(PlayerProfile.this, Player.class);
-        myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY);
-        PlayerProfile.this.startActivity(myIntent);
+        new AlertDialog.Builder(this)
+            .setTitle("Delete Player")
+            .setMessage("Are you sure you want to delete this player?")
+            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    // continue with delete
+                    mDbHelper_profile.deletePlayer(player_id);
+                    finish();
+                }
+            })
+            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {}})
+            .show();
     }
 }
 
