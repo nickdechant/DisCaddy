@@ -83,7 +83,7 @@ public class Scorecard extends Activity {
             }
         });
         TextView holeDisplayNumber = (TextView) findViewById(R.id.scorecard_current_hole);
-        holeDisplayNumber.setText("Hole " + currentHole);
+        holeDisplayNumber.setText("Hole " + currentHole+1);
         //fillData(); //Prob going to need this eventually!!!!!!!!!!!
     }
 
@@ -92,7 +92,7 @@ public class Scorecard extends Activity {
         ListView playerList = (ListView) findViewById(R.id.scorecard_list);
         playerList.setAdapter(custAdapter);
         TextView holeDisplayNumber = (TextView) findViewById(R.id.scorecard_current_hole);
-        holeDisplayNumber.setText("Hole " + currentHole);
+        holeDisplayNumber.setText("Hole " + currentHole+1);
     }
 
     @Override
@@ -116,7 +116,7 @@ public class Scorecard extends Activity {
 
     public int[] getScores(String player) {
         return this.scores.get(player);
-    }
+    }x
 
     public int incrementScore(String player, int hole) {
         return ++this.scores.get(player)[hole];

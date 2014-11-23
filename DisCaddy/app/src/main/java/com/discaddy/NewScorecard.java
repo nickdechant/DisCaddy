@@ -66,8 +66,6 @@ public class NewScorecard extends Activity {
     }
 
 
-
-
     public void fillData() {
         // Get all of the notes from the database and create the item list
         Cursor c = this.mDbHelper.fetchAllPlayers();
@@ -79,6 +77,9 @@ public class NewScorecard extends Activity {
         // Now create an array adapter and set it to display using our row
         SimpleCursorAdapter players =
                 new SimpleCursorAdapter(this, R.layout.player_row, c, from, to);
+
+
+
         final ListView playerList = (ListView)findViewById(R.id.players_list);
         playerList.setAdapter(players);
 
@@ -86,10 +87,6 @@ public class NewScorecard extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-//                Toast.makeText(getApplicationContext(),
-//                        "Click ListItem Number " + position, Toast.LENGTH_SHORT)
-//                        .show();
-
                 Cursor playerData = mDbHelper.fetchPlayer(id);
                 String name = playerData.getString(1); // Name index
 
@@ -98,45 +95,35 @@ public class NewScorecard extends Activity {
                 if (selectedPlayers.containsKey(position)) {
                     if (Integer.parseInt(selectedPlayers.get(position).split("#")[0]) == 1) {
                         putStr = "0#" + selectedPlayers.get(position).split("#")[1];
+//                        Log.d(LOG_TAG, putStr);
                         selectedPlayers.put(position, putStr);
                         Toast.makeText(getApplicationContext(),"item " + position + " now unselected", Toast.LENGTH_SHORT).show();
-//                        ((TextView)view).setBackgroundColor(Color.argb(0,0,0,0));
+
+                        TextView tv = (TextView) view;
+                        tv.setBackgroundColor(Color.TRANSPARENT);
                     }
                     else {
                         putStr = "1#" + selectedPlayers.get(position).split("#")[1];
+//                        Log.d(LOG_TAG, putStr);
                         selectedPlayers.put(position, putStr);
                         Toast.makeText(getApplicationContext(),"item " + position + " now selected", Toast.LENGTH_SHORT).show();
-//                        ((TextView)view).setBackgroundColor(Color.argb(125, 75, 236, 90));
+
+                        TextView tv = (TextView) view;
+                        tv.setBackgroundColor(Color.argb(125, 75, 236, 90));
                     }
                 }
                 else {
                     putStr = "1#" + name;
+//                    Log.d(LOG_TAG, putStr);
                     selectedPlayers.put(position, putStr);
                     Toast.makeText(getApplicationContext(),"item " + position + " now selected", Toast.LENGTH_SHORT).show();
-//                    ((TextView)view).setBackgroundColor(Color.argb(125, 75, 236, 90));
+
+                    TextView tv = (TextView) view;
+                    tv.setBackgroundColor(Color.argb(125, 75, 236, 90));
                 }
-//                if (view.isSelected()) {
-//                    view.setSelected(false);
-//                if (view.isPressed()) {
-//                    view.setPressed(false);
-//                    Toast.makeText(getApplicationContext(),
-//                            "item is now unselected", Toast.LENGTH_LONG)
-//                            .show();
-////                    ((TextView)view).setBackgroundResource(Color.rgb(0,200,0));
-//                }
-//                else {
-////                    view.setSelected(true);
-//                    view.setPressed(true);
-//                    Toast.makeText(getApplicationContext(),
-//                            "item is now selected", Toast.LENGTH_LONG)
-//                            .show();
-////                    ((TextView)view).setBackgroundResource(Color.rgb(200,0,0));
-//                }
 
-
-
-                TextView tv = (TextView) view;
-                tv.setBackgroundColor(Color.argb(125, 75, 236, 90));
+//                TextView tv = (TextView) view;
+//                tv.setBackgroundColor(Color.argb(125, 75, 236, 90));
 
             }
         });
@@ -175,15 +162,19 @@ public class NewScorecard extends Activity {
 
     public void go(View view) {
         //currentPlayers should contain all players
-        if (selectedPlayers.entrySet().isEmpty())
+        if (selectedPlayers.entrySet().isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Select at least one player to play!", Toast.LENGTH_SHORT).show();
             return;
+        }
         for (Map.Entry<Integer, String> e : selectedPlayers.entrySet()) {
 //            Log.d(LOG_TAG, e.getValue());
             if (Integer.parseInt(e.getValue().split("#")[0]) == 1)
                 currentPlayers.add(e.getValue().split("#")[1]);
         }
-        if (currentPlayers.isEmpty())
+        if (currentPlayers.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Select at least one player to play!", Toast.LENGTH_SHORT).show();
             return;
+        }
 
         String playerString = "";
 
@@ -193,6 +184,7 @@ public class NewScorecard extends Activity {
 
         Intent myIntent = new Intent(NewScorecard.this, Scorecard.class);
 
+        Log.d(LOG_TAG, playerString);
         myIntent.putExtra("playerString", playerString);
 
         NewScorecard.this.startActivity(myIntent);

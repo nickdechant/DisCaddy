@@ -25,8 +25,6 @@ public class NewPlayer extends Activity {
         score_field = (EditText) findViewById(R.id.score_new_player);
         course_field = (EditText) findViewById(R.id.course_new_player);
         disk_field =  (EditText) findViewById(R.id.disk_new_player);
-
-
     }
 
 
