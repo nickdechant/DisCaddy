@@ -76,6 +76,8 @@ public class NewScorecard extends Activity {
     }
 
 
+
+
     public void fillData() {
         // Get all of the notes from the database and create the item list
         Cursor c = this.mDbHelper.fetchAllPlayers();
@@ -86,14 +88,7 @@ public class NewScorecard extends Activity {
 
         // Now create an array adapter and set it to display using our row
         SimpleCursorAdapter players =
-<<<<<<< HEAD
                 new SimpleCursorAdapter(this, R.layout.list_row, c, from, to);
-=======
-                new SimpleCursorAdapter(this, R.layout.player_row, c, from, to);
-
-
-
->>>>>>> 25c5efc64519d0b6bdf480a2a2742952dd430c68
         final ListView playerList = (ListView)findViewById(R.id.players_list);
         playerList.setAdapter(players);
 
@@ -101,49 +96,9 @@ public class NewScorecard extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-<<<<<<< HEAD
-=======
-                Cursor playerData = mDbHelper.fetchPlayer(id);
-                String name = playerData.getString(1); // Name index
-
-                String putStr = "";
-
-                if (selectedPlayers.containsKey(position)) {
-                    if (Integer.parseInt(selectedPlayers.get(position).split("#")[0]) == 1) {
-                        putStr = "0#" + selectedPlayers.get(position).split("#")[1];
-//                        Log.d(LOG_TAG, putStr);
-                        selectedPlayers.put(position, putStr);
-                        Toast.makeText(getApplicationContext(),"item " + position + " now unselected", Toast.LENGTH_SHORT).show();
-
-                        TextView tv = (TextView) view;
-                        tv.setBackgroundColor(Color.TRANSPARENT);
-                    }
-                    else {
-                        putStr = "1#" + selectedPlayers.get(position).split("#")[1];
-//                        Log.d(LOG_TAG, putStr);
-                        selectedPlayers.put(position, putStr);
-                        Toast.makeText(getApplicationContext(),"item " + position + " now selected", Toast.LENGTH_SHORT).show();
-
-                        TextView tv = (TextView) view;
-                        tv.setBackgroundColor(Color.argb(125, 75, 236, 90));
-                    }
-                }
-                else {
-                    putStr = "1#" + name;
-//                    Log.d(LOG_TAG, putStr);
-                    selectedPlayers.put(position, putStr);
-                    Toast.makeText(getApplicationContext(),"item " + position + " now selected", Toast.LENGTH_SHORT).show();
-
-                    TextView tv = (TextView) view;
-                    tv.setBackgroundColor(Color.argb(125, 75, 236, 90));
-                }
-
-//                TextView tv = (TextView) view;
-//                tv.setBackgroundColor(Color.argb(125, 75, 236, 90));
->>>>>>> 25c5efc64519d0b6bdf480a2a2742952dd430c68
 
                 //get selected textview and name string.
-               TextView tv = (TextView) view;
+                TextView tv = (TextView) view;
                 String name = tv.getText().toString();
 
                 //If selected name does not exist, add it and change color to green.
@@ -164,7 +119,6 @@ public class NewScorecard extends Activity {
         NewScorecard.this.startActivity(myIntent);
     }
 
-<<<<<<< HEAD
     public void next() {
         //players_list should contain all players. if not let user know and do nothing.
         if(player_list.isEmpty()){
@@ -177,38 +131,6 @@ public class NewScorecard extends Activity {
 
         //send user and the player's list to the select course stage.
         Intent myIntent = new Intent(NewScorecard.this, ScorecardSelectCourse.class);
-=======
-    public void addCurrentPlayer(View view) {
-        //get player represented by item clicked (each item should be one player)
-        //add to list of currentPlayers
-    }
-
-    public void go(View view) {
-        //currentPlayers should contain all players
-        if (selectedPlayers.entrySet().isEmpty()) {
-            Toast.makeText(getApplicationContext(), "Select at least one player to play!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        for (Map.Entry<Integer, String> e : selectedPlayers.entrySet()) {
-//            Log.d(LOG_TAG, e.getValue());
-            if (Integer.parseInt(e.getValue().split("#")[0]) == 1)
-                currentPlayers.add(e.getValue().split("#")[1]);
-        }
-        if (currentPlayers.isEmpty()) {
-            Toast.makeText(getApplicationContext(), "Select at least one player to play!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        String playerString = "";
-
-        for (String s : currentPlayers)
-            playerString += s + "#";
-        playerString = playerString.substring(0,playerString.length() - 1);
-
-        Intent myIntent = new Intent(NewScorecard.this, Scorecard.class);
-
-        Log.d(LOG_TAG, playerString);
->>>>>>> 25c5efc64519d0b6bdf480a2a2742952dd430c68
         myIntent.putExtra("playerString", playerString);
         myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         NewScorecard.this.startActivity(myIntent);

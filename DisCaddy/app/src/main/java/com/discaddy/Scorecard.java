@@ -59,7 +59,6 @@ public class Scorecard extends Activity {
         for (Map.Entry<String, int[]> e : scores.entrySet())
             playerNames.add(e.getKey());
 
-<<<<<<< HEAD
         fillData();
     }
 
@@ -67,45 +66,6 @@ public class Scorecard extends Activity {
     //simply used to attach our swipe detector to any user touches.
     public boolean onTouchEvent(MotionEvent event) {
         return gestureDetector.onTouchEvent(event);
-=======
-        ScorecardCustomAdapter custAdapter = new ScorecardCustomAdapter(this, this, scores, currentHole);
-        ListView playerList = (ListView) findViewById(R.id.scorecard_list);
-        playerList.setAdapter(custAdapter);
-
-        Button prevBtn = (Button)findViewById(R.id.scorecard_prev_button);
-        Button nextBtn = (Button)findViewById(R.id.scorecard_next_button);
-
-        prevBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                if(currentHole > 0) {
-                    currentHole--;
-                    updateListView();
-                }
-            }
-        });
-
-        nextBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                if(currentHole < 17) {
-                    currentHole++;
-                    updateListView();
-                }
-            }
-        });
-        TextView holeDisplayNumber = (TextView) findViewById(R.id.scorecard_current_hole);
-        holeDisplayNumber.setText("Hole " + currentHole+1);
-        //fillData(); //Prob going to need this eventually!!!!!!!!!!!
-    }
-
-    public void updateListView() {
-        ScorecardCustomAdapter custAdapter = new ScorecardCustomAdapter(this, this, scores, currentHole);
-        ListView playerList = (ListView) findViewById(R.id.scorecard_list);
-        playerList.setAdapter(custAdapter);
-        TextView holeDisplayNumber = (TextView) findViewById(R.id.scorecard_current_hole);
-        holeDisplayNumber.setText("Hole " + currentHole+1);
->>>>>>> 25c5efc64519d0b6bdf480a2a2742952dd430c68
     }
 
     @Override
@@ -126,7 +86,6 @@ public class Scorecard extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-<<<<<<< HEAD
     private void fillData(){
         ScorecardCustomAdapter custAdapter = new ScorecardCustomAdapter(this, scores, currentHole);
         ListView playerList = (ListView) findViewById(R.id.scorecard_list);
@@ -160,11 +119,6 @@ public class Scorecard extends Activity {
             return true;
         }
     }
-=======
-    public int[] getScores(String player) {
-        return this.scores.get(player);
-    }x
->>>>>>> 25c5efc64519d0b6bdf480a2a2742952dd430c68
 
     private void handleSwipeLeftToRight() {
         if(currentHole < 17) {
