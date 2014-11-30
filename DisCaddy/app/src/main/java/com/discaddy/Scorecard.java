@@ -1,17 +1,23 @@
 package com.discaddy;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.InputType;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
+import android.view.MotionEvent;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,33 +26,30 @@ public class Scorecard extends Activity {
 
     private Map<String, int[]> scores;
     private ArrayList<String> playerNames;
-    private ScorecardDbAdapter mDbHelperScore;
-    private CourseDbAdapter mDbHelperCourse;
-    private final String LOG_TAG = "Scorecard";
+    private final String TAG = "Scorecard";
     public int currentHole;
     public String courseName;
+
+    //Variables for the swipe sensitivity.
+    private static final int SWIPE_MIN_DISTANCE = 120;
+    private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+    //Used to attach gesture controls.
+    private GestureDetector gestureDetector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score_card);
+        gestureDetector = new GestureDetector(this, new OnSwipeGestureListener());
         this.scores = new HashMap<String, int[]>();
         this.playerNames = new ArrayList<String>();
-        mDbHelperScore = new ScorecardDbAdapter(this);
-        mDbHelperScore.open();
         Intent myIntent = getIntent();
         this.currentHole = 0;
-        //create mock course for testing
-        String[] parStrings = {"4", "3", "4", "3", "4", "3", "4", "3", "4", "3", "4", "3", "4", "3", "4", "3", "4", "3"};
-        mDbHelperCourse = new CourseDbAdapter(this);
-        mDbHelperCourse.open();
-        if (mDbHelperCourse.createCourse("Zilker", parStrings) != -1)
-            Log.d(LOG_TAG, "course created successfully");
-
-        String playerString = myIntent.getStringExtra("playerString");
-        String[] players = playerString.split("#");
+        String[] parStrings = myIntent.getStringArrayExtra("courseString");
+        String[] players = myIntent.getStringArrayExtra("playerString");
+        //courseName = "zilker";
+        courseName = myIntent.getStringExtra("courseName");
         for (String player : players) {
-            //TODO: parse in par score from current course
             int[] pars = new int[18];
             for (int i=0; i<18; i++)
                 pars[i] = Integer.parseInt(parStrings[i]);
@@ -56,78 +59,131 @@ public class Scorecard extends Activity {
         for (Map.Entry<String, int[]> e : scores.entrySet())
             playerNames.add(e.getKey());
 
-        ScorecardCustomAdapter custAdapter = new ScorecardCustomAdapter(this, this, scores, currentHole);
-        ListView playerList = (ListView) findViewById(R.id.scorecard_list);
-        playerList.setAdapter(custAdapter);
-
-        Button prevBtn = (Button)findViewById(R.id.scorecard_prev_button);
-        Button nextBtn = (Button)findViewById(R.id.scorecard_next_button);
-
-        prevBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                if(currentHole > 0) {
-                    currentHole--;
-                    updateListView();
-                }
-            }
-        });
-
-        nextBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                if(currentHole < 17) {
-                    currentHole++;
-                    updateListView();
-                }
-            }
-        });
-        TextView holeDisplayNumber = (TextView) findViewById(R.id.scorecard_current_hole);
-        holeDisplayNumber.setText("Hole " + currentHole);
-        //fillData(); //Prob going to need this eventually!!!!!!!!!!!
+        fillData();
     }
 
-    public void updateListView() {
-        ScorecardCustomAdapter custAdapter = new ScorecardCustomAdapter(this, this, scores, currentHole);
-        ListView playerList = (ListView) findViewById(R.id.scorecard_list);
-        playerList.setAdapter(custAdapter);
-        TextView holeDisplayNumber = (TextView) findViewById(R.id.scorecard_current_hole);
-        holeDisplayNumber.setText("Hole " + currentHole);
+    @Override
+    //simply used to attach our swipe detector to any user touches.
+    public boolean onTouchEvent(MotionEvent event) {
+        return gestureDetector.onTouchEvent(event);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.score_card, menu);
+        getMenuInflater().inflate(R.menu.menu_new_scorecards, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        // Handle action bar item clicks here.
+        switch(item.getItemId()){
+            case R.id.action_scorecard_save:
+                saveScores();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public int[] getScores(String player) {
-        return this.scores.get(player);
+    private void fillData(){
+        ScorecardCustomAdapter custAdapter = new ScorecardCustomAdapter(this, scores, currentHole);
+        ListView playerList = (ListView) findViewById(R.id.scorecard_list);
+        playerList.setAdapter(custAdapter);
+
+        TextView holeDisplayNumber = (TextView) findViewById(R.id.scorecard_current_hole);
+        holeDisplayNumber.setText("Hole " + currentHole);
+
+        TextView courseDisplayName = (TextView) findViewById(R.id.scorecard_course_name);
+        courseDisplayName.setText(courseName);
     }
 
-    public int incrementScore(String player, int hole) {
-        return ++this.scores.get(player)[hole];
+    //used to handle the users left or right swipes. ignores other gestures.
+    //moves current hole based on gesture.
+    private class OnSwipeGestureListener extends
+            GestureDetector.SimpleOnGestureListener {
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2,
+                               float velocityX, float velocityY) {
+            float deltaX = e2.getX() - e1.getX();
+            if ((Math.abs(deltaX) < SWIPE_MIN_DISTANCE)
+                    || (Math.abs(velocityX) < SWIPE_THRESHOLD_VELOCITY)) {
+                return false; // insignificant swipe
+            } else {
+                if (deltaX < 0) { // left to right
+                    handleSwipeLeftToRight();
+                } else { // right to left
+                    handleSwipeRightToLeft();
+                }
+            }
+            return true;
+        }
     }
 
-    public int decrementScore(String player, int hole) {
-       return --this.scores.get(player)[hole];
+    private void handleSwipeLeftToRight() {
+        if(currentHole < 17) {
+            currentHole++;
+            fillData();
+        }
     }
 
-    public void addPlayer(String name) {
-        scores.put(name, new int[18]);
+    private void handleSwipeRightToLeft() {
+        if(currentHole > 0) {
+            currentHole--;
+            fillData();
+        }
+    }
+
+    private void saveScores(){
+        //prompt user to enter score card name. Also how we will look them up and display them.
+        //since there may be multiple from multiple courses.
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        alert.setTitle("Save Scorecard");
+        alert.setMessage("Input scorecard name");
+
+        // Set an EditText view to get user input
+        final EditText input = new EditText(this);
+        input.setRawInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+        alert.setView(input);
+
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String card_name = input.getText().toString();
+                //create scorecard in background.
+                new SaveScorecard().execute(card_name);
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {}
+        });
+        alert.show();
+    }
+
+    //wraps database access so that it is not done in the GUI thread.
+    private class SaveScorecard extends AsyncTask<String, Void, Void> {
+
+        private DisCaddyDbAdapter mDbHelper= new DisCaddyDbAdapter(Scorecard.this);
+        // perform the database access
+        @Override
+        //pass in the user's card name and create the cards.
+        protected Void doInBackground(String... params) {
+            mDbHelper.open();
+            long createdAt = Calendar.getInstance().getTimeInMillis();
+            String card_name = params[0];
+            //save each player's scores.
+            for (String name : scores.keySet())
+                mDbHelper.createScoreCard(createdAt, name, courseName, card_name, scores.get(name));
+            return null;
+        }
+
+        protected void onPostExecute(Void v){
+            super.onPostExecute(v);
+            mDbHelper.close();
+            Toast.makeText(Scorecard.this, "Scorecard Saved", Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 
 }

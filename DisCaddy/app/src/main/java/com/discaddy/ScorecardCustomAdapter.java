@@ -20,7 +20,7 @@ public class ScorecardCustomAdapter extends BaseAdapter implements ListAdapter {
     private Map<String, int[]> scores;
     private int currentHole;
 
-    public ScorecardCustomAdapter(Scorecard card, Context context, Map<String, int[]> scores, int currentHole) {
+    public ScorecardCustomAdapter(Context context, Map<String, int[]> scores, int currentHole) {
         for (Map.Entry<String, int[]> e : scores.entrySet())
             list.add(e.getKey());
         this.scores = scores;
@@ -70,7 +70,6 @@ public class ScorecardCustomAdapter extends BaseAdapter implements ListAdapter {
         final String name = list.get(position);
         int[] scoreList = scores.get(name);
         int score = scoreList[currentHole];
-        Log.d("DEBUGER", "score = " + score);
 
         TextView value = (TextView) view.findViewById(R.id.scorecard_row_score);
         value.setText(Integer.toString(score));

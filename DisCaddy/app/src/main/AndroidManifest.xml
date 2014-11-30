@@ -2,14 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.discaddy" >
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
-
+        android:theme="@style/AppTheme" >
         <activity
-            android:name=".Splash"
+            android:name="com.discaddy.Splash"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,44 +21,68 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".NewScorecard"
+            android:name="com.discaddy.NewScorecard"
             android:label="@string/title_activity_new_scorecard" >
         </activity>
         <activity
-            android:name=".RecentScorecards"
-            android:label="@string/title_activity_recent_scorecards" >
+            android:name="com.discaddy.RecentScorecards"
+            android:label="Scorecards" >
         </activity>
         <activity
-            android:name=".Player"
+            android:name="com.discaddy.Player"
             android:label="Player" >
         </activity>
         <activity
-            android:name=".NewPlayer"
-            android:label="NewPlayer" >
-        </activity>
-        <activity
-            android:name=".FindACourse"
-            android:label="@string/title_activity_find_acourse" >
-        </activity>
-        <activity
-            android:name=".Discs"
+            android:name="com.discaddy.Discs"
             android:label="@string/title_activity_discs" >
         </activity>
         <activity
-            android:name=".ReportDisc"
-            android:label="@string/title_activity_report_disc" >
-        </activity>
-        <activity
-            android:name=".PlayerProfile"
+            android:name="com.discaddy.PlayerProfile"
             android:label="@string/title_activity_player_profile" >
         </activity>
         <activity
-            android:name=".PlayerEdit"
-            android:label="PlayerEdit">
+            android:name="com.discaddy.PlayerNewEdit"
+            android:label="Player" >
+        </activity>
+        <activity
+            android:name="com.discaddy.Courses"
+            android:label="@string/title_activity_courses" >
+        </activity>
+        <activity
+            android:name="com.discaddy.CoursesNewEdit"
+            android:label="Courses" >
+        </activity>
+        <activity
+            android:name="com.discaddy.CoursesProfile"
+            android:label="@string/title_activity_courses_profile" >
+        </activity>
+        <activity
+            android:name="com.discaddy.CoursesLookUp"
+            android:label="@string/title_activity_look_up_courses" >
+        </activity>
+        <activity
+            android:name="com.discaddy.CoursesWebView"
+            android:label="@string/title_activity_course_web_view" >
+        </activity>
+        <activity
+            android:name="com.discaddy.CoursesSetPars"
+            android:label="@string/title_activity_course_set_pars" >
+        </activity>
+        <activity
+            android:name="com.discaddy.CourseNewEdit"
+            android:label="@string/title_activity_course_new_edit" >
+        </activity>
+        <activity
+            android:name="com.discaddy.dummy.MainActivity"
+            android:label="@string/title_activity_main" >
+        </activity>
+        <activity
+            android:name="com.discaddy.ScorecardSelectCourse"
+            android:label="@string/title_activity_scorecard_select_course" >
         </activity>
         <activity
             android:name=".Scorecard"
-            android:label="@string/title_activity_scorecard">
+            android:label="@string/title_activity_new_scorecards" >
         </activity>
     </application>
 

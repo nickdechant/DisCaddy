@@ -8,6 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class DisCaddyDbAdapter {
@@ -59,36 +62,70 @@ public class DisCaddyDbAdapter {
                                     KEY_THREE, KEY_FOUR, KEY_FIVE, KEY_SIX, KEY_SEVEN, KEY_EIGHT, KEY_NINE, KEY_TEN,
                                     KEY_ELEVEN, KEY_TWELVE, KEY_THIRTEEN, KEY_FOURTEEN, KEY_FIFTEEN, KEY_SIXTEEN,
                                     KEY_SEVENTEEN, KEY_EIGHTEEN};
-    //Column names for COURSE_TABLE
-    private static final String KEY_PAR_ONE = "par1";
-    private static final String KEY_PAR_TWO = "par2";
-    private static final String KEY_PAR_THREE = "par3";
-    private static final String KEY_PAR_FOUR = "par4";
-    private static final String KEY_PAR_FIVE = "par5";
-    private static final String KEY_PAR_SIX = "par6";
-    private static final String KEY_PAR_SEVEN = "par7";
-    private static final String KEY_PAR_EIGHT = "par8";
-    private static final String KEY_PAR_NINE = "par9";
-    private static final String KEY_PAR_TEN = "par10";
-    private static final String KEY_PAR_ELEVEN = "par11";
-    private static final String KEY_PAR_TWELVE = "par12";
-    private static final String KEY_PAR_THIRTEEN = "par13";
-    private static final String KEY_PAR_FOURTEEN = "par14";
-    private static final String KEY_PAR_FIFTEEN = "par15";
-    private static final String KEY_PAR_SIXTEEN = "par16";
-    private static final String KEY_PAR_SEVENTEEN = "par17";
-    private static final String KEY_PAR_EIGHTEEN = "par18";
-    String course_table_values[] = {KEY_ID, KEY_CREATED_AT, KEY_COURSE, KEY_PAR_ONE, KEY_PAR_TWO, KEY_PAR_THREE, KEY_PAR_FOUR,
-                                    KEY_PAR_FIVE, KEY_PAR_SIX, KEY_PAR_SEVEN, KEY_PAR_EIGHT, KEY_PAR_NINE, KEY_PAR_TEN, KEY_PAR_ELEVEN,
-                                    KEY_PAR_TWELVE, KEY_PAR_THIRTEEN, KEY_PAR_FOURTEEN, KEY_PAR_FIFTEEN, KEY_PAR_SIXTEEN, KEY_PAR_SEVENTEEN,
-                                    KEY_PAR_EIGHTEEN};
 
-    //SQL table creation statements
+    //COURSE_TABLE data
+
+    private static final String KEY_WEBSITE = "website";
+    private static final String KEY_ADDRESS = "address";
+    private static final String KEY_PHONE_NUMBER = "phone";
+    private static final String KEY_RATING = "rating";
+    private static final String KEY_PAR_1 = "par_1";
+    private static final String KEY_PAR_2 = "par_2";
+    private static final String KEY_PAR_3 = "par_3";
+    private static final String KEY_PAR_4 = "par_4";
+    private static final String KEY_PAR_5 = "par_5";
+    private static final String KEY_PAR_6 = "par_6";
+    private static final String KEY_PAR_7 = "par_7";
+    private static final String KEY_PAR_8 = "par_8";
+    private static final String KEY_PAR_9 = "par_9";
+    private static final String KEY_PAR_10 = "par_10";
+    private static final String KEY_PAR_11 = "par_11";
+    private static final String KEY_PAR_12 = "par_12";
+    private static final String KEY_PAR_13 = "par_13";
+    private static final String KEY_PAR_14 = "par_14";
+    private static final String KEY_PAR_15 = "par_15";
+    private static final String KEY_PAR_16 = "par_16";
+    private static final String KEY_PAR_17 = "par_17";
+    private static final String KEY_PAR_18 = "par_18";
+
+
+    public static final String[] COURSE_KEYS= {KEY_ID, KEY_CREATED_AT, KEY_NAME, KEY_WEBSITE, KEY_ADDRESS, KEY_PHONE_NUMBER, KEY_RATING,
+                                                KEY_PAR_1, KEY_PAR_2, KEY_PAR_3, KEY_PAR_4, KEY_PAR_5, KEY_PAR_6, KEY_PAR_7, KEY_PAR_8, KEY_PAR_9,
+                                                KEY_PAR_10, KEY_PAR_11, KEY_PAR_12, KEY_PAR_13, KEY_PAR_14, KEY_PAR_15, KEY_PAR_16, KEY_PAR_17,
+                                                KEY_PAR_18};
+
+    private static String CREATE_COURSE =
+            "CREATE TABLE "+ COURSE_TABLE +" (" +
+                    KEY_ID + " INTEGER PRIMARY KEY," +
+                    KEY_CREATED_AT + " INTEGER," +
+                    KEY_NAME + " TEXT," +
+                    KEY_WEBSITE +" TEXT," +
+                    KEY_ADDRESS +" TEXT," +
+                    KEY_PHONE_NUMBER +" TEXT," +
+                    KEY_RATING +" INTEGER," +
+                    KEY_PAR_1 +" INTEGER," +
+                    KEY_PAR_2 +" INTEGER," +
+                    KEY_PAR_3 +" INTEGER," +
+                    KEY_PAR_4 +" INTEGER," +
+                    KEY_PAR_5 +" INTEGER," +
+                    KEY_PAR_6 +" INTEGER," +
+                    KEY_PAR_7 +" INTEGER," +
+                    KEY_PAR_8 +" INTEGER," +
+                    KEY_PAR_9 +" INTEGER," +
+                    KEY_PAR_10 +" INTEGER," +
+                    KEY_PAR_11 +" INTEGER," +
+                    KEY_PAR_12 +" INTEGER," +
+                    KEY_PAR_13 +" INTEGER," +
+                    KEY_PAR_14 +" INTEGER," +
+                    KEY_PAR_15 +" INTEGER," +
+                    KEY_PAR_16 +" INTEGER," +
+                    KEY_PAR_17 +" INTEGER," +
+                    KEY_PAR_18 +" INTEGER);";
 
     private static final String CREATE_PLAYER =
             "CREATE TABLE "+ PLAYER_TABLE +" (" +
                     KEY_ID + " INTEGER PRIMARY KEY," +
-                    KEY_CREATED_AT +" TEXT," +
+                    KEY_CREATED_AT +" INTEGER," +
                     KEY_NAME +" TEXT," +
                     KEY_COURSE +" TEXT," +
                     KEY_AVE_SCORE +" TEXT," +
@@ -99,7 +136,7 @@ public class DisCaddyDbAdapter {
     private static final String CREATE_SCORE =
             "CREATE TABLE " + SCORE_TABLE +" (" +
                     KEY_ID + " INTEGER PRIMARY KEY," +
-                    KEY_CREATED_AT +" TEXT," +
+                    KEY_CREATED_AT +" INTEGER," +
                     KEY_NAME +" TEXT," +
                     KEY_COURSE +" TEXT," +
                     KEY_CARD_NAME +" TEXT," +
@@ -121,29 +158,6 @@ public class DisCaddyDbAdapter {
                     KEY_SIXTEEN +" INTEGER," +
                     KEY_SEVENTEEN +" INTEGER," +
                     KEY_EIGHTEEN +" INTEGER);";
-    private static final String CREATE_COURSE =
-            "CREATE TABLE " + COURSE_TABLE +" (" +
-                    KEY_ID + " INTEGER PRIMARY KEY," +
-                    KEY_CREATED_AT +" TEXT," +
-                    KEY_COURSE +" TEXT," +
-                    KEY_PAR_ONE +" INTEGER," +
-                    KEY_PAR_TWO +" INTEGER," +
-                    KEY_PAR_THREE +" INTEGER," +
-                    KEY_PAR_FOUR +" INTEGER," +
-                    KEY_PAR_FIVE+" INTEGER," +
-                    KEY_PAR_SIX+" INTEGER," +
-                    KEY_PAR_SEVEN +" INTEGER," +
-                    KEY_PAR_EIGHT +" INTEGER," +
-                    KEY_PAR_NINE +" INTEGER," +
-                    KEY_PAR_TEN +" INTEGER," +
-                    KEY_PAR_ELEVEN +" INTEGER," +
-                    KEY_PAR_TWELVE +" INTEGER," +
-                    KEY_PAR_THIRTEEN +" INTEGER," +
-                    KEY_PAR_FOURTEEN +" INTEGER," +
-                    KEY_PAR_FIFTEEN +" INTEGER," +
-                    KEY_PAR_SIXTEEN +" INTEGER," +
-                    KEY_PAR_SEVENTEEN +" INTEGER," +
-                    KEY_PAR_EIGHTEEN +" INTEGER);";
 
     private static final int DATABASE_VERSION = 1;
 
@@ -222,7 +236,6 @@ public class DisCaddyDbAdapter {
      * @return Cursor over all notes
      */
     public Cursor fetchAllPlayers() {
-        Log.v(TAG,"made it to fetch all players");
         return mDb.query(PLAYER_TABLE, player_table_values, null, null, null, null, null);
     }
 
@@ -249,7 +262,7 @@ public class DisCaddyDbAdapter {
      * a -1 to indicate failure.
      */
     public long createPlayer(String name, String course, String aveScore, String lowScore,
-                             String createdAt, String lowCourse, String disk, String imagepath) {
+                             long createdAt, String lowCourse, String disk, String imagepath) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_NAME, name);
         initialValues.put(KEY_COURSE, course);
@@ -267,7 +280,7 @@ public class DisCaddyDbAdapter {
      * specified using the rowId.
      */
     public boolean updatePlayer(long rowId, String name, String course, String aveScore, String lowScore,
-                                String createdAt, String lowCourse, String disk, String imagepath) {
+                                long createdAt, String lowCourse, String disk, String imagepath) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_NAME, name);
         initialValues.put(KEY_COURSE, course);
@@ -280,26 +293,39 @@ public class DisCaddyDbAdapter {
         return mDb.update(PLAYER_TABLE, initialValues, KEY_ID + "=" + rowId, null) > 0;
     }
 
-    public long createCourse(String createdAt, String courseName, int pars[]){
+    public long createCourse(long createdAt, String courseName, String web, String address, String number, String rating, int pars[]){
+        //checks to make sure duplicates are not happining.
+        /*if((mDb.query(true, COURSE_TABLE, course_table_values,
+                KEY_COURSE + "=" + courseName, null, null, null, null, null).getCount()) != 0){
+            Log.v(TAG,"this course already exists. Not adding again.");
+            return -1;
+        }*/
         ContentValues initialValues = new ContentValues();
-        initialValues.put(course_table_values[1], createdAt);
-        initialValues.put(course_table_values[2], courseName);
+        initialValues.put(KEY_CREATED_AT, createdAt);
+        initialValues.put(KEY_NAME, courseName);
+        initialValues.put(KEY_WEBSITE, web);
+        initialValues.put(KEY_ADDRESS, address);
+        initialValues.put(KEY_PHONE_NUMBER, number);
+        initialValues.put(KEY_RATING, rating);
         for(int i = 0; i < pars.length; i++)
-            initialValues.put(course_table_values[i+3], pars[i]);
+            initialValues.put(COURSE_KEYS[i+7], pars[i]);
         return mDb.insert(COURSE_TABLE, null, initialValues);
     }
 
-    public boolean updateCourse(long rowId ,String createdAt, String courseName, int pars[]){
+    public boolean updateCourse(long rowId ,long createdAt, String courseName, String web, String address, String number, String rating, int pars[]){
         ContentValues initialValues = new ContentValues();
-        initialValues.put(course_table_values[1], createdAt);
-        initialValues.put(course_table_values[2], courseName);
+        initialValues.put(KEY_CREATED_AT, createdAt);
+        initialValues.put(KEY_NAME, courseName);
+        initialValues.put(KEY_WEBSITE, web);
+        initialValues.put(KEY_ADDRESS, address);
+        initialValues.put(KEY_PHONE_NUMBER, number);
+        initialValues.put(KEY_RATING, rating);
         for(int i = 0; i < pars.length; i++)
-            initialValues.put(course_table_values[i+3], pars[i]);
+            initialValues.put(COURSE_KEYS[i+7], pars[i]);
         return mDb.update(COURSE_TABLE, initialValues, KEY_ID + "=" + rowId, null) > 0;
     }
 
     public boolean deleteCourse(long rowId) {
-
         return mDb.delete(COURSE_TABLE, KEY_ID + "=" + rowId, null) > 0;
     }
 
@@ -308,9 +334,8 @@ public class DisCaddyDbAdapter {
      *
      * @return Cursor over all notes
      */
-    public Cursor fetchAllCourse() {
-
-        return mDb.query(COURSE_TABLE, course_table_values, null, null, null, null, null);
+    public Cursor fetchAllCourses() {
+        return mDb.query(COURSE_TABLE, COURSE_KEYS, null, null, null, null, null);
     }
 
     /**
@@ -322,14 +347,14 @@ public class DisCaddyDbAdapter {
      */
     public Cursor fetchCourse(long rowId) throws SQLException {
 
-        Cursor mCursor = mDb.query(true, COURSE_TABLE, course_table_values,
+        Cursor mCursor = mDb.query(true, COURSE_TABLE, COURSE_KEYS,
                 KEY_ID + "=" + rowId, null, null, null, null, null);
         if (mCursor != null)
             mCursor.moveToFirst();
         return mCursor;
     }
 
-    public long createScoreCard(String createdAt, String name, String course, String cardName, int[] scores){
+    public long createScoreCard(long createdAt, String name, String course, String cardName, int[] scores){
         ContentValues initialValues = new ContentValues();
         initialValues.put(score_table_values[1],createdAt);
         initialValues.put(score_table_values[2], name);

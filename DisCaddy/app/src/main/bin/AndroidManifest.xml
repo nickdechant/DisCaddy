@@ -29,7 +29,7 @@
             android:label="@string/title_activity_players" >
         </activity>
         <activity
-            android:name=".FindACourse"
+            android:name=".Course"
             android:label="@string/title_activity_find_acourse" >
         </activity>
         <activity
