@@ -16,6 +16,7 @@ public class CoursesSetPars extends Activity {
     private int[] course_pars;
     private boolean isEdit;
     ParCustomAdapter adapter;
+    ParViewCustomAdapter viewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +43,10 @@ public class CoursesSetPars extends Activity {
     @Override
     public void onBackPressed(){
         Intent myIntent = new Intent();
-        myIntent.putExtra("array", adapter.getPars());
+        if(isEdit)
+            myIntent.putExtra("array", adapter.getPars());
+        else
+            myIntent.putExtra("array", viewAdapter.getPars());
         setResult(4832,myIntent);
         super.onBackPressed();
 
@@ -85,12 +89,15 @@ public class CoursesSetPars extends Activity {
         for(int i = 1; i <= 18; i++){
             hole_names.add("Hole #"+i);
         }
-
-        // Create the adapter to convert the array to views
-        adapter = new ParCustomAdapter(this, hole_names, course_pars);
-
-        //Attach the adapter to the ListView
         ListView listView = (ListView) findViewById(R.id.course_new_pars_list);
-        listView.setAdapter(adapter);
+        if(isEdit) {
+            adapter = new ParCustomAdapter(this, hole_names, course_pars);
+            //Attach the adapter to the ListView
+            listView.setAdapter(adapter);
+        }else {
+            viewAdapter = new ParViewCustomAdapter(this, hole_names, course_pars);
+            //Attach the adapter to the ListView
+            listView.setAdapter(viewAdapter);
+        }
     }
 }

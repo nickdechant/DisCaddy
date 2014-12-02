@@ -65,12 +65,12 @@ public class NewScorecard extends Activity {
         switch (item.getItemId()){
             case R.id.action_add_player:
                 addNewPlayer();
-                return true;
+                break;
             case R.id.action_next:
                 next();
-                return true;
+                break;
             case R.id.action_help_new_scorecard:
-
+                break;
             default:
                 Log.v(TAG, "Bad selection");
         }
