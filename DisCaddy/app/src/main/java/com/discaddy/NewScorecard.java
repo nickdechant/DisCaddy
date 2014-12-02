@@ -38,6 +38,14 @@ public class NewScorecard extends Activity {
         player_list = new ArrayList<String>();
         mDbHelper = new DisCaddyDbAdapter(this);
         mDbHelper.open();
+        //fillData();
+    }
+
+    //resets player list and textview's background colors.
+    @Override
+    protected void onResume(){
+        super.onResume();
+        player_list.clear();
         fillData();
     }
 
