@@ -101,11 +101,12 @@ public class NewScorecard extends Activity {
                 TextView tv = (TextView) view;
                 String name = tv.getText().toString();
 
-                //If selected name does not exist, add it and change color to green.
+                //If selected name does not exist, add it and change color to white.
                 //If selected name exists, remove it and change color to clear
                 if(!player_list.contains(name)){
                     player_list.add(name);
-                    tv.setBackgroundColor(Color.argb(125, 75, 236, 90));
+//                    tv.setBackgroundColor(Color.argb(125, 75, 236, 90));
+                    tv.setBackgroundColor(Color.argb(255, 255, 255, 255));
                 }else{
                     player_list.remove(name);
                     tv.setBackgroundColor(Color.argb(0, 255, 255, 255));
@@ -122,7 +123,7 @@ public class NewScorecard extends Activity {
     public void next() {
         //players_list should contain all players. if not let user know and do nothing.
         if(player_list.isEmpty()){
-            Toast.makeText(this, "No Players Selected", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Select at least one player to start!", Toast.LENGTH_SHORT).show();
             return;
         }
         //change player_list arraylist to a string array.

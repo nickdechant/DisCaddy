@@ -11,6 +11,8 @@ import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -22,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class Scorecard extends Activity {
+public class Scorecard extends Activity implements View.OnClickListener{
 
     private Map<String, int[]> scores;
     private ArrayList<String> playerNames;
@@ -35,6 +37,8 @@ public class Scorecard extends Activity {
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
     //Used to attach gesture controls.
     private GestureDetector gestureDetector;
+
+    Button nextHole, previousHole;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +64,22 @@ public class Scorecard extends Activity {
             playerNames.add(e.getKey());
 
         fillData();
+
+        nextHole = (Button)findViewById(R.id.next_hole_button);
+        previousHole = (Button)findViewById(R.id.previous_hole_button);
+
+        nextHole.setOnClickListener(this);
+        previousHole.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == nextHole) {
+            handleSwipeLeftToRight();
+        }
+        if (v == previousHole) {
+            handleSwipeRightToLeft();
+        }
     }
 
     @Override
@@ -92,7 +112,9 @@ public class Scorecard extends Activity {
         playerList.setAdapter(custAdapter);
 
         TextView holeDisplayNumber = (TextView) findViewById(R.id.scorecard_current_hole);
-        holeDisplayNumber.setText("Hole " + currentHole);
+        String dispStr = "Hole ";
+        dispStr = dispStr + (currentHole+1);
+        holeDisplayNumber.setText(dispStr);
 
         TextView courseDisplayName = (TextView) findViewById(R.id.scorecard_course_name);
         courseDisplayName.setText(courseName);
