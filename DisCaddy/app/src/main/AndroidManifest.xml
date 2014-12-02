@@ -81,8 +81,12 @@
             android:label="@string/title_activity_scorecard_select_course" >
         </activity>
         <activity
-            android:name=".Scorecard"
+            android:name="com.discaddy.Scorecard"
             android:label="@string/title_activity_new_scorecards" >
+        </activity>
+        <activity
+            android:name="com.discaddy.ScorecardViewer"
+            android:label="@string/title_activity_scorecard_viewer" >
         </activity>
     </application>
 

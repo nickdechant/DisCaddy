@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +18,10 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -172,8 +177,12 @@ public class Scorecard extends Activity implements View.OnClickListener{
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String card_name = input.getText().toString();
-                //create scorecard in background.
-                new SaveScorecard().execute(card_name);
+                //make JSON Object for storage.
+                String jsonString;
+                if((jsonString = makeJSON()) != null)
+                    new SaveScorecard().execute(card_name, jsonString); //create scorecard in background.
+                else
+                    Toast.makeText(Scorecard.this, "JSON ERROR, card not saved", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -183,20 +192,39 @@ public class Scorecard extends Activity implements View.OnClickListener{
         alert.show();
     }
 
+    //change map into json object for serialization.
+    //Just makes life a little easier.
+    private String makeJSON(){
+        JSONObject new_scores = new JSONObject();
+        for (String player : scores.keySet()) {
+            JSONArray new_pars = new JSONArray();
+            int[] old_pars = scores.get(player);
+            for (int i : old_pars)
+                new_pars.put(i);
+            try {
+                new_scores.put(player, new_pars);
+            } catch (JSONException e) {
+                Log.v(TAG, "ISSUE CREATING JSON OBJECT");
+                return null;
+            }
+        }
+        return new_scores.toString();
+    }
+
     //wraps database access so that it is not done in the GUI thread.
     private class SaveScorecard extends AsyncTask<String, Void, Void> {
 
         private DisCaddyDbAdapter mDbHelper= new DisCaddyDbAdapter(Scorecard.this);
         // perform the database access
         @Override
-        //pass in the user's card name and create the cards.
+        //pass in the user's card name and the json string and create the cards.
         protected Void doInBackground(String... params) {
             mDbHelper.open();
             long createdAt = Calendar.getInstance().getTimeInMillis();
             String card_name = params[0];
-            //save each player's scores.
-            for (String name : scores.keySet())
-                mDbHelper.createScoreCard(createdAt, name, courseName, card_name, scores.get(name));
+            String jsonString = params[1];
+            //save the scores.
+            mDbHelper.createScoreCard(createdAt, courseName, card_name, jsonString);
             return null;
         }
 

@@ -39,8 +39,9 @@ public class DisCaddyDbAdapter {
     String player_table_values[] = {KEY_ID, KEY_CREATED_AT, KEY_NAME, KEY_COURSE, KEY_DISK, KEY_AVE_SCORE,
                                     KEY_LOW_SCORE, KEY_LOW_COURSE, KEY_IMAGE};
     //Column names for SCORE_TABLE
-    private static final String KEY_CARD_NAME = "cardName";
-    private static final String KEY_ONE = "hole1";
+    public static final String KEY_CARD_NAME = "cardName";
+    private static final String KEY_MAP = "cardMap";
+    /*private static final String KEY_ONE = "hole1";
     private static final String KEY_TWO = "hole2";
     private static final String KEY_THREE = "hole3";
     private static final String KEY_FOUR = "hole4";
@@ -61,8 +62,8 @@ public class DisCaddyDbAdapter {
     String score_table_values[] = {KEY_ID, KEY_CREATED_AT, KEY_NAME, KEY_COURSE, KEY_CARD_NAME, KEY_ONE, KEY_TWO,
                                     KEY_THREE, KEY_FOUR, KEY_FIVE, KEY_SIX, KEY_SEVEN, KEY_EIGHT, KEY_NINE, KEY_TEN,
                                     KEY_ELEVEN, KEY_TWELVE, KEY_THIRTEEN, KEY_FOURTEEN, KEY_FIFTEEN, KEY_SIXTEEN,
-                                    KEY_SEVENTEEN, KEY_EIGHTEEN};
-
+                                    KEY_SEVENTEEN, KEY_EIGHTEEN};*/
+    String score_table_values[] = {KEY_ID, KEY_CREATED_AT, KEY_COURSE, KEY_CARD_NAME, KEY_MAP};
     //COURSE_TABLE data
 
     private static final String KEY_WEBSITE = "website";
@@ -133,7 +134,7 @@ public class DisCaddyDbAdapter {
                     KEY_LOW_COURSE +" TEXT," +
                     KEY_DISK +" TEXT," +
                     KEY_IMAGE +" TEXT);";
-    private static final String CREATE_SCORE =
+    /*private static final String CREATE_SCORE =
             "CREATE TABLE " + SCORE_TABLE +" (" +
                     KEY_ID + " INTEGER PRIMARY KEY," +
                     KEY_CREATED_AT +" INTEGER," +
@@ -157,7 +158,15 @@ public class DisCaddyDbAdapter {
                     KEY_FIFTEEN +" INTEGER," +
                     KEY_SIXTEEN +" INTEGER," +
                     KEY_SEVENTEEN +" INTEGER," +
-                    KEY_EIGHTEEN +" INTEGER);";
+                    KEY_EIGHTEEN +" INTEGER);";*/
+
+    private static final String CREATE_SCORE =
+            "CREATE TABLE " + SCORE_TABLE +" (" +
+                    KEY_ID + " INTEGER PRIMARY KEY," +
+                    KEY_CREATED_AT +" INTEGER," +
+                    KEY_COURSE +" TEXT," +
+                    KEY_CARD_NAME +" TEXT," +
+                    KEY_MAP +" TEXT);";
 
     private static final int DATABASE_VERSION = 1;
 
@@ -354,23 +363,19 @@ public class DisCaddyDbAdapter {
         return mCursor;
     }
 
-    public long createScoreCard(long createdAt, String name, String course, String cardName, int[] scores){
+    public long createScoreCard(long createdAt, String course, String cardName, String map){
         ContentValues initialValues = new ContentValues();
         initialValues.put(score_table_values[1],createdAt);
-        initialValues.put(score_table_values[2], name);
-        initialValues.put(score_table_values[3], course);
-        initialValues.put(score_table_values[4], cardName);
-        for(int i = 0; i < scores.length; i++){
-            initialValues.put(score_table_values[i+5], scores[i]);
-        }
+        initialValues.put(score_table_values[2], course);
+        initialValues.put(score_table_values[3], cardName);
+        initialValues.put(score_table_values[4], map);
         return mDb.insert(SCORE_TABLE, null, initialValues);
     }
-
-    public Cursor fetchAllScores() {
-
+    //returns a list of scorecard names to use for display and selection.
+    public Cursor fetchAllScorecards() {
         return mDb.query(SCORE_TABLE, score_table_values, null, null, null, null, null);
     }
-
+    //pase the name of the card data you want returned.
     public Cursor fetchScore(long rowId) throws SQLException {
 
         Cursor mCursor =
@@ -383,5 +388,9 @@ public class DisCaddyDbAdapter {
         return mCursor;
 
     }
+    public boolean deleteScorecard(long rowId) {
+        return mDb.delete(SCORE_TABLE, KEY_ID + "=" + rowId, null) > 0;
+    }
+
 }
 
