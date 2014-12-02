@@ -106,7 +106,7 @@ public class CoursesNewEdit extends Activity {
     public void setPars(View view){
         Intent myIntent = new Intent(CoursesNewEdit.this, CoursesSetPars.class);
         myIntent.putExtra("array", course_pars);
-        myIntent.putExtra("isEdit", isEdit);
+        myIntent.putExtra("isEdit", true);
         CoursesNewEdit.this.startActivityForResult(myIntent,PARS);
     }
 

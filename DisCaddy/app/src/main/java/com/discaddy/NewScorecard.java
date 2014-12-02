@@ -24,10 +24,7 @@ import java.util.Map;
 
 public class NewScorecard extends Activity {
 
-    private Scorecard scorecard;
-    private ArrayList<String> currentPlayers;
     private DisCaddyDbAdapter mDbHelper;
-    private Map<Integer, String> selectedPlayers;
     private static final String TAG = "NewScorecard";
     private ArrayList<String> player_list;
 
@@ -38,9 +35,6 @@ public class NewScorecard extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_scorecard);
 
-        this.scorecard = new Scorecard();
-        this.currentPlayers = new ArrayList<String>();
-        this.selectedPlayers = new HashMap<Integer, String>();
         player_list = new ArrayList<String>();
         mDbHelper = new DisCaddyDbAdapter(this);
         mDbHelper.open();

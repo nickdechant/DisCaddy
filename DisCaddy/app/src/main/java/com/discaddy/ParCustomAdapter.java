@@ -8,7 +8,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -17,13 +21,11 @@ public class ParCustomAdapter extends ArrayAdapter<String> {
     private static final String TAG = "ParCustomAdapter";
     private ArrayList<String> holes;
     private int[] default_pars;
-    private boolean isEdit;
 
-    public ParCustomAdapter(Context context, ArrayList<String> holes, int[] default_pars, boolean isEdit) {
+    public ParCustomAdapter(Context context, ArrayList<String> holes, int[] default_pars) {
         super(context, 0, holes);
         this.holes = holes;
         this.default_pars = default_pars;
-        this.isEdit = isEdit;
     }
 
     //may not need these next three.
@@ -58,36 +60,36 @@ public class ParCustomAdapter extends ArrayAdapter<String> {
 
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null)
-            if(isEdit)
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.par_row, parent, false);
-            else
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.par_row, parent, false);//something else
-        // Lookup views for data population
-        TextView hole_name = (TextView) convertView.findViewById(R.id.list_hole_string);
-        EditText par_number = (EditText) convertView.findViewById(R.id.course_row_par);
+                // Lookup views for data population
+                TextView hole_name = (TextView) convertView.findViewById(R.id.list_hole_string);
+                EditText par_number = (EditText) convertView.findViewById(R.id.course_row_par);
 
-        // Populate the data into the template view using the data object
-        hole_name.setText(hole_number);
-        par_number.setText(""+current_par);
+                // Populate the data into the template view using the data object
+                hole_name.setText(hole_number);
+                par_number.setText("" + current_par);
 
-        //Handle buttons and add onClickListeners
-        Button plusBtn = (Button)convertView.findViewById(R.id.par_plus_button);
-        Button minusBtn = (Button)convertView.findViewById(R.id.par_minus_button);
 
-        plusBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                incrementPar(position, default_pars);
-                notifyDataSetChanged();
-            }
-        });
-        minusBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                decrementPar(position, default_pars);
-                notifyDataSetChanged();
-            }
-        });
+
+                //Handle buttons and add onClickListeners
+                Button plusBtn = (Button) convertView.findViewById(R.id.par_plus_button);
+                Button minusBtn = (Button) convertView.findViewById(R.id.par_minus_button);
+
+                plusBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        incrementPar(position, default_pars);
+                        notifyDataSetChanged();
+                    }
+                });
+                minusBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        decrementPar(position, default_pars);
+                        notifyDataSetChanged();
+                    }
+                });
+
         // Return the completed view to render on screen
         return convertView;
     }

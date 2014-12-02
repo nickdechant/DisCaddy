@@ -52,8 +52,11 @@ public class CoursesSetPars extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_courses_set_pars, menu);
-        return true;
+        if(isEdit) {
+            getMenuInflater().inflate(R.menu.menu_courses_set_pars, menu);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -84,7 +87,7 @@ public class CoursesSetPars extends Activity {
         }
 
         // Create the adapter to convert the array to views
-        adapter = new ParCustomAdapter(this, hole_names, course_pars, isEdit);
+        adapter = new ParCustomAdapter(this, hole_names, course_pars);
 
         //Attach the adapter to the ListView
         ListView listView = (ListView) findViewById(R.id.course_new_pars_list);

@@ -38,7 +38,7 @@ public class RecentScorecards extends Activity {
         list.setEmptyView(empty);
     }
 
-    @Override
+/*    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_recent_scorecards, menu);
@@ -59,7 +59,7 @@ public class RecentScorecards extends Activity {
                 Log.v(TAG, "BAD SELECTION");
         }
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     //wraps database access so that it is not done in the GUI thread.
     private class LoadScorecards extends AsyncTask<Void, Void, Cursor> {

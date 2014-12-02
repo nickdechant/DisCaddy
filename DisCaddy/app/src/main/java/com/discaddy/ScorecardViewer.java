@@ -47,6 +47,7 @@ public class ScorecardViewer extends Activity {
             finish();
         }
         new LoadScorecard().execute(cardId);
+        //nothing below this is reachable.
 
     }
 

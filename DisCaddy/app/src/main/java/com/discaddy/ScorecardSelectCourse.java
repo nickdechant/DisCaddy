@@ -1,6 +1,8 @@
 package com.discaddy;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -11,6 +13,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+
+import java.util.ArrayList;
 
 
 public class ScorecardSelectCourse extends Activity {
@@ -54,11 +58,30 @@ public class ScorecardSelectCourse extends Activity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_scorecard_add_course) {
-            Intent myIntent = new Intent(ScorecardSelectCourse.this, CoursesNewEdit.class);
-            ScorecardSelectCourse.this.startActivity(myIntent);
+            addCourse();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void addCourse(){
+        String[] options = {"Find Course", "Create Course"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Add Course")
+                .setItems(options, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int index) {
+                        if(index == 0){
+                            Intent myIntent = new Intent(ScorecardSelectCourse.this, CoursesLookUp.class);
+                            myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                            ScorecardSelectCourse.this.startActivity(myIntent);
+                        }else{
+                            Intent myIntent = new Intent(ScorecardSelectCourse.this, CoursesNewEdit.class);
+                            ScorecardSelectCourse.this.startActivity(myIntent);
+                        }
+                    }
+                });
+        builder.create();
+        builder.show();
     }
 
     //wraps database access so that it is not done in the GUI thread.

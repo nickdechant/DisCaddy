@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
@@ -25,6 +26,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -51,7 +53,7 @@ public class CoursesLookUp extends Activity {
     }
 
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_courses_look_up, menu);
@@ -71,7 +73,7 @@ public class CoursesLookUp extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
 
 
@@ -123,6 +125,13 @@ public class CoursesLookUp extends Activity {
 
     //wraps database access so that it is not done in the GUI thread.
     public class GetPlaces extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected  void onPreExecute(){
+            TextView none = (TextView) findViewById(R.id.empty);
+            none.setText("Loading Nearby Courses...");
+        }
+
         //fetch and parse place data
         @Override
         protected String doInBackground(String... placesURL) {
@@ -169,6 +178,8 @@ public class CoursesLookUp extends Activity {
                 fillData();
             }catch(JSONException e){
                 //usually if their was a connection problem.
+                TextView none = (TextView) findViewById(R.id.empty);
+                none.setText("No Courses Found");
                 Toast.makeText(CoursesLookUp.this, "Problem Connecting", Toast.LENGTH_SHORT).show();
             }
         }

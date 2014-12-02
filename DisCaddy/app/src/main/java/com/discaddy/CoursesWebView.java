@@ -98,7 +98,6 @@ public class CoursesWebView extends Activity {
 
         Intent myIntent = new Intent(CoursesWebView.this, CoursesNewEdit.class);
         myIntent.putExtra("id", id);
-        myIntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         CoursesWebView.this.startActivity(myIntent);
     }
 

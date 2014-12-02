@@ -3,10 +3,4 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.discaddy.RecentScorecards" >
 
-    <item android:id="@+id/action_help_recent_scorecard"
-        android:title="@string/help"
-        android:icon="@android:drawable/ic_menu_help"
-        android:titleCondensed="Help"
-        android:alphabeticShortcut="h"
-        android:showAsAction="ifRoom" />
 </menu>
