@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,7 +36,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class CoursesLookUp extends Activity {
+public class CoursesLookUp extends Activity implements View.OnClickListener {
 
     private final static String key = "AIzaSyDwflKsNSeb4_2FyX3w7p-4iXpEuy9eTAE";
     private String parameters;
@@ -43,15 +44,27 @@ public class CoursesLookUp extends Activity {
     private final static String TAG = "CoursesLookUp";
     public HashMap<String, String> coursesMap;
 
+    Button findAnotherCourseButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_courses_look_up);
         coursesMap = new HashMap<String, String>();
         setParameters();
+
+        findAnotherCourseButton = (Button) findViewById(R.id.find_another_course_button);
+        findAnotherCourseButton.setOnClickListener(this);
+
         new GetPlaces().execute(parameters);
     }
 
+
+    @Override
+    public void onClick(View v) {
+        //TODO: gather course string as input, search web for it and if found, add to course list
+        Toast.makeText(CoursesLookUp.this, "Course will be looked up here", Toast.LENGTH_SHORT).show();
+    }
 
     /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -16,7 +16,7 @@
     <string name="player_name">Player Name: </string>
     <string name="player_score">Player Score: </string>
     <string name="player_fav_course">Favorite Course: </string>
-    <string name="player_disk">Favorite Disc: </string>
+    <string name="player_disc">Favorite Disc: </string>
     <string name="title_activity_new_scorecard">New Scorecard</string>
     <string name="title_activity_recent_scorecards">Recent Scorecards</string>
     <string name="title_activity_players">Players</string>
@@ -28,14 +28,14 @@
     <string name="edit_name">Name (Required)</string>
     <string name="edit_course">Favorite Course</string>
     <string name="edit_score">Top Score</string>
-    <string name="edit_disk">Favorite Disc</string>
+    <string name="edit_disc">Favorite Disc</string>
     <string name="edit_Submit">Submit</string>
     <string name="edit_image">New Image</string>
     <string name="edit_image_description">Profile Picture</string>
     <string name="new_name">Name (Required)</string>
     <string name="new_course">Favorite Course</string>
     <string name="new_score">Top Score</string>
-    <string name="new_disk">Favorite Disc</string>
+    <string name="new_disc">Favorite Disc</string>
     <string name="new_Submit">Submit</string>
     <string name="new_image">Select Image</string>
     <string name="profile_edit">Edit Profile</string>
@@ -60,5 +60,6 @@
     <string name="title_activity_scorecard_select_course">Select A Course</string>
     <string name="title_activity_new_scorecards">New Scorecard</string>
     <string name="no_scorecards">No Recent Scorecards</string>
+    <string name="lookup_disc">Enter a Disc to Lookup</string>
 
 </resources>

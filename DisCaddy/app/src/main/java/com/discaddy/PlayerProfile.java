@@ -89,7 +89,7 @@ public class PlayerProfile extends Activity {
             courseView.setText("Favorite Course: " + course);
             TextView scoreView = (TextView) findViewById(R.id.player_score);
             scoreView.setText("Player Score: " + aveScore);
-            TextView diskView = (TextView) findViewById(R.id.player_fav_disk);
+            TextView diskView = (TextView) findViewById(R.id.player_fav_disc);
             diskView.setText("Favorite Disk: " + disk);
             imageView = (ImageView) findViewById(R.id.player_image);
             new SetImage().execute();

@@ -51,8 +51,8 @@
             android:textSize="25sp"/>
 
         <TextView
-            android:id="@+id/player_fav_disk"
-            android:text="@string/player_disk"
+            android:id="@+id/player_fav_disc"
+            android:text="@string/player_disc"
             android:textColor="#000000"
             android:textStyle="bold"
             android:layout_width="match_parent"
