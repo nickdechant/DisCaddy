@@ -1,12 +1,15 @@
 package com.discaddy;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +17,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,7 +55,7 @@ public class CoursesLookUp extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_courses_look_up);
         coursesMap = new HashMap<String, String>();
-        setParameters();
+        setParameters(null);
 
         findAnotherCourseButton = (Button) findViewById(R.id.find_another_course_button);
         findAnotherCourseButton.setOnClickListener(this);
@@ -64,31 +68,34 @@ public class CoursesLookUp extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         //TODO: gather course string as input, search web for it and if found, add to course list
         Toast.makeText(CoursesLookUp.this, "Course will be looked up here", Toast.LENGTH_SHORT).show();
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        alert.setTitle("Course Name");
+        alert.setMessage("Input a Course Name");
+
+        // Set an EditText view to get user input
+        final EditText input = new EditText(this);
+        input.setRawInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+        alert.setView(input);
+
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //clear courseMap
+                coursesMap.clear();
+
+                String keyword = input.getText().toString();
+                keyword = keyword.replace(" ", "+");
+                setParameters(keyword);
+                new GetPlaces().execute(parameters);
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {}
+        });
+        alert.show();
     }
-
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_courses_look_up, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }*/
-
-
 
     public void fillData() {
 
@@ -123,9 +130,14 @@ public class CoursesLookUp extends Activity implements View.OnClickListener {
         lng = lastLoc.getLongitude();
     }
 
-    private void setParameters(){
+    private void setParameters(String keyword){
         setUserLocation();
-        parameters = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+lat+","+lng+"&rankby=distance&name=disc%20golf%20course&key="+key;
+        if(keyword == null)
+            parameters = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+lat+","+lng+"&rankby=distance&name=disc%20golf%20course&key="+key;
+        else
+            parameters = "https://maps.googleapis.com/maps/api/place/textsearch/json?query="+keyword+"&key="+key;
+
+        //parameters = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+lat+","+lng+"&rankby=distance&name="+keyword+"&keyword=course&key="+key;
         Log.v(TAG, parameters);
     }
 
