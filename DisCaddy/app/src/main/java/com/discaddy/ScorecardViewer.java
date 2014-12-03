@@ -10,10 +10,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -24,7 +27,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 
-public class ScorecardViewer extends Activity {
+public class ScorecardViewer extends Activity implements View.OnClickListener{
 
     private static final String TAG = "ScorecardViewer";
     private String courseName;
@@ -32,13 +35,17 @@ public class ScorecardViewer extends Activity {
     private HashMap<String, int[]> scores;
     private DisCaddyDbAdapter mDbHelper;
     private long cardId;
+    protected int currentHole;
+
+    Button nextHole, previousHole;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scorecard_viewer);
+        setContentView(R.layout.activity_score_card);
         scores = new HashMap<String, int[]>();
         mDbHelper = new DisCaddyDbAdapter(ScorecardViewer.this);
+        currentHole = 0;
 
         Intent myIntent = getIntent();
         cardId = myIntent.getLongExtra("id", -1);
@@ -46,11 +53,41 @@ public class ScorecardViewer extends Activity {
             Log.v(TAG, "Could not get ID");
             finish();
         }
+
+        nextHole = (Button)findViewById(R.id.next_hole_button);
+        previousHole = (Button)findViewById(R.id.previous_hole_button);
+
+        nextHole.setOnClickListener(this);
+        previousHole.setOnClickListener(this);
+
         new LoadScorecard().execute(cardId);
         //nothing below this is reachable.
 
     }
 
+    @Override
+    public void onClick(View v) {
+        if (v == nextHole) {
+            handleSwipeLeftToRight();
+        }
+        if (v == previousHole) {
+            handleSwipeRightToLeft();
+        }
+    }
+
+    private void handleSwipeLeftToRight() {
+        if(currentHole < 17) {
+            currentHole++;
+            fillData();
+        }
+    }
+
+    private void handleSwipeRightToLeft() {
+        if(currentHole > 0) {
+            currentHole--;
+            fillData();
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -63,9 +100,6 @@ public class ScorecardViewer extends Activity {
         switch (item.getItemId()){
             case R.id.action_delete_scorecard:
                 deleteCard();
-                break;
-            case R.id.action_help_scorecard_viewer:
-                viewerHelp();
                 break;
             default:
                 Toast.makeText(this, "BAD SELECTION", Toast.LENGTH_SHORT).show();
@@ -118,10 +152,6 @@ public class ScorecardViewer extends Activity {
 
     }
 
-    private void viewerHelp(){
-        //TODO: display help message if necessary otherwise delete this.
-    }
-
 
     //used to set up the scores hashmap from the json string.
     //This step can be removed if using json object instead of hashmap.
@@ -144,6 +174,21 @@ public class ScorecardViewer extends Activity {
             return false;
         }
     }
+
+    private void fillData(){
+        ScorecardViewerAdapter custAdapter = new ScorecardViewerAdapter(this, scores, currentHole);
+        ListView playerList = (ListView) findViewById(R.id.scorecard_list);
+        playerList.setAdapter(custAdapter);
+
+        TextView holeDisplayNumber = (TextView) findViewById(R.id.scorecard_current_hole);
+        String dispStr = "Hole ";
+        dispStr = dispStr + (currentHole+1);
+        holeDisplayNumber.setText(dispStr);
+
+        TextView courseDisplayName = (TextView) findViewById(R.id.scorecard_course_name);
+        courseDisplayName.setText(courseName);
+    }
+
 
     private class LoadScorecard extends AsyncTask<Long, Void, Boolean> {
 
@@ -176,7 +221,7 @@ public class ScorecardViewer extends Activity {
                 Toast.makeText(ScorecardViewer.this, "ERROR: could not load card", Toast.LENGTH_SHORT).show();
                 finish();
             }
-            //TODO: populate UI Here!
+            fillData();
         }
     }
 }

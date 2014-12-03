@@ -4,12 +4,6 @@
     android:layout_height="fill_parent"
     >
 
-    <!--<ImageView android:layout_width="fill_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:src="@drawable/basket_black_white"-->
-        <!--android:id="@+id/imageView_scorecardBackground"-->
-        <!--android:layout_alignParentBottom="true"/>-->
-
     <TextView
         android:id="@+id/scorecard_course_name"
         android:layout_width="wrap_content"

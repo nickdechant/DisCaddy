@@ -66,7 +66,6 @@ public class CoursesLookUp extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        //TODO: gather course string as input, search web for it and if found, add to course list
         Toast.makeText(CoursesLookUp.this, "Course will be looked up here", Toast.LENGTH_SHORT).show();
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -136,8 +135,6 @@ public class CoursesLookUp extends Activity implements View.OnClickListener {
             parameters = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+lat+","+lng+"&rankby=distance&name=disc%20golf%20course&key="+key;
         else
             parameters = "https://maps.googleapis.com/maps/api/place/textsearch/json?query="+keyword+"&key="+key;
-
-        //parameters = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+lat+","+lng+"&rankby=distance&name="+keyword+"&keyword=course&key="+key;
         Log.v(TAG, parameters);
     }
 

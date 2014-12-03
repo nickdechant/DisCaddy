@@ -9,10 +9,4 @@
         android:alphabeticShortcut="d"
         android:showAsAction="ifRoom" />
 
-    <item android:id="@+id/action_help_scorecard_viewer"
-        android:title="@string/help"
-        android:icon="@android:drawable/ic_menu_help"
-        android:titleCondensed="Help"
-        android:alphabeticShortcut="h"
-        android:showAsAction="ifRoom" />
 </menu>
