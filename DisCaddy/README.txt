@@ -26,40 +26,41 @@ Once the game is over, scorecards can be saved for later use.
 FEATURES COMPLETED
 /********************************************************************************************/
 
-Player profile creation and viewing (with name, favorite course/disc). Pictures to be added later.
+Player profile creation and viewing (with name, favorite course/disc, scores, pictures from file or gallary, ect.).
 
-Basic scorecard: active players, scores for each player, ability to update scores as needed.
+Basic scorecard creation and viewing: active players, chosen course, scores for each player, ability to update scores as needed.
 
-Course location: Google Map API used to locate closest disc golf courses.
+Course profile creation and viewing (with name, location, phone number, website, rating, pars,ect.).
+
+Course lookup using google places API. Allows user to view courses close to them or search for a specific course.
+
+Disc analyzer: uses online  FlightAnalyzer in web view to display various discs and their trajectory.
 
 /********************************************************************************************/
-FEATURES NOT YET COMPLETED
+FEATURES NOT ADDED THAT WERE SPECIFIED IN PROTOTYPE
 /********************************************************************************************/
 
-Course selection: Currently the user cannot select the course to play. This is the most integral functionality that is lacking in the app right now. We had issues with database population (not sure where course information can be obtained and stored within the app), but it will be resolved before beta.
+Report a found disk: Did not impliment an external database for this infomration.
 
-Disc Information: There is no integrated disc information feature. This will be completed before beta.
-
-UI Tweaking: Most of the UI is a bit bland. This will obviously be changed before beta release.
-
-Full GPS Location Data: Instead of using the Google Maps API, the app will eventually use the phone's location data to find nearby courses. Searching Google essentially does the same thing for the time being.
+Pars database: did not find or create an external database for course pars. User is required to input pars for each created course. 
 
 /********************************************************************************************/
 FEATURES ADDED THAT WEREN'T SPECIFIED IN PROTOTYPE
 /********************************************************************************************/
 
-N/A
+None
 
 /********************************************************************************************/
 CODE CHUNKS/CLASSES OBTAINED FROM OTHER SOURCES
 /********************************************************************************************/
 
-The main code we took from other sources was code for custom adapters for displaying information. (http://www.vogella.com/tutorials/AndroidListView/article.html#adapterown_custom) This mainly applies to the ScorecardCustomAdapter class.
+The main code we took from other sources was code for custom adapters for displaying information. (http://www.vogella.com/tutorials/AndroidListView/article.html#adapterown_custom).
 
-We used a bit of help for SQL queries as well. This applies to the PlayerDbAdapter, CourseDbAdapter, and ScorecardDbAdapter classes.
+We used a bit of help for SQL queries as well. Used the android Note pad example to help create DiscaddyDbAdapter (http://developer.android.com/training/notepad/notepad-ex1.html)
 
+Copied snippets from stack overflow to help with picture taking and getting intents (http://stackoverflow.com/questions/4455558/allow-user-to-select-camera-or-gallery-for-image). 
 /********************************************************************************************/
 ORIGINAL CODE/CLASSES
 /********************************************************************************************/
 
-All of the classes contained in this project are original, with the exception of snippets contained in the four classes mentioned above.
+All of the classes contained in this project are original, with the exception of snippets explained above. 
